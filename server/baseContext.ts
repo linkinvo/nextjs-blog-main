@@ -8,6 +8,8 @@ export default class BaseContext {
 
     constructor(opts: IContextContainer) {
         this.di = opts
+        console.log('Hello');
+        
         // if (!BaseContext.stopInit) {
         //     opts.initModels();
         //     BaseContext.stopInit = true;
