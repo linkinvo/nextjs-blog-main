@@ -19,8 +19,10 @@ module.exports = {
       // times(1).map((i) => {
         let item = {
           userId: user.id,
+          propertiesId: properties.id,
           feedback: faker.commerce.productDescription(),
           createdAt: Date.now() / 1000,
+          updatedAt: Date.now() / 1000,
         };
         properties.map((propertiesReviews) => {
             item = {

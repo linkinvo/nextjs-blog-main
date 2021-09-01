@@ -17,4 +17,14 @@ export default class UserController extends BaseContext {
   @route("/check")
   @POST()
   check(req, res) {}
+
+
+  @route('/:id')
+  @GET()
+  getById(req, res) {
+    const {id} = req.params;
+    this.di.User.findOne({where: {id}})
+    .then((user) => res.json(user))
+  }
+  
 }

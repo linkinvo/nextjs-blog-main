@@ -7,6 +7,7 @@ module.exports = {
       id int(11) NOT NULL AUTO_INCREMENT,
       firstName varchar(255) DEFAULT NULL,
       lastName varchar(255) DEFAULT NULL,
+      password varchar(255) DEFAULT NULL,
       role enum('ADMIN','CLIENT') DEFAULT NULL,
       phone varchar(255) DEFAULT NULL,
       email varchar(255) DEFAULT NULL,

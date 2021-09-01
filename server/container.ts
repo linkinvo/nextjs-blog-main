@@ -44,6 +44,6 @@ container.register({
 //     //formatName: 'camelCase',
 //   }, 
 //   )
-  
+
 
 export default container;

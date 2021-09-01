@@ -20,8 +20,7 @@ export default class PropertiesController extends BaseContext {
   @GET()
   async getOne(req, res) {
     const { id } = req.params;
-    this.di.Properties.findOne({ where: { id } }).then((properties) => {
-      res.json(properties);
-    });
+    this.di.Properties.findOne({ where: { id } })
+    .then((properties) => res.json(properties));
   }
 }
