@@ -75,6 +75,10 @@ export default (ctx: IContextContainer) => {
         },
       },
     },
+    phone: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     role: {
       type: DataTypes.STRING,
       defaultValue: "CLIENT",
@@ -103,7 +107,9 @@ export default (ctx: IContextContainer) => {
   // });
 
   User.initModel = () => {
-    //User.belongsToMany(ctx.Properties, {through: ctx.Reviews })
+
+    // User.belongsToMany(ctx.Properties, {through: ctx.Reviews })
+    // User.belongsTo(ctx.Properties, { as: "properties", foreignKey: "userId"})
 
     User.hasMany(ctx.Properties, {
       sourceKey: "id",
@@ -111,6 +117,7 @@ export default (ctx: IContextContainer) => {
       onDelete: "CASCADE",
       as: "properties",
     });
+
 
     //User.belongsTo(ctx.Properties);
 

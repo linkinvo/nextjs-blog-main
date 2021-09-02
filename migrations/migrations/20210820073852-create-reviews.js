@@ -10,7 +10,7 @@ module.exports = {
       feedback text NOT NULL,
       createdAt bigint(20) NOT NULL,
       userId int(11) NOT NULL,
-      propertiesId int(11) NOT NULL,
+      propertiId int(11) NOT NULL,
       updatedAt bigint(20) NOT NULL,
       PRIMARY KEY (id),
       KEY idx_created_at (createdAt),

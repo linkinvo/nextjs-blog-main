@@ -12,7 +12,10 @@ export default class PropertiesController extends BaseContext {
   @route("/get")
   @GET()
   async getAll(req, res) {
-    const properties = await this.di.Properties.findAll();
+    const { Properties, Reviews, User } = this.di;
+    const properties = await Properties.findAll({
+      include: [{ model: Reviews }, { model: User }],
+    });
     return res.json(properties);
   }
 
@@ -20,7 +23,22 @@ export default class PropertiesController extends BaseContext {
   @GET()
   async getOne(req, res) {
     const { id } = req.params;
-    this.di.Properties.findOne({ where: { id } })
-    .then((properties) => res.json(properties));
+    const { Properties, Reviews, User } = this.di;
+    Properties.findOne({
+      where: { id },
+      include: [
+        {
+          model: Reviews,
+          include: [
+            {
+              model: User,
+            },
+          ],
+        },
+        {
+          model: User,
+        },
+      ],
+    }).then((properties) => res.json(properties));
   }
 }

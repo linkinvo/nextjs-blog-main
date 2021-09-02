@@ -31,16 +31,15 @@ export default (ctx: IContextContainer) => {
     createdAt: { type: DataTypes.BIGINT, allowNull: false },
     updatedAt: { type: DataTypes.BIGINT, allowNull: false },
     userId: { type: DataTypes.INTEGER },
-  },{
-    timestamps: false,
   });
 
   Properties.initModel = () => {
+
     Properties.belongsTo(ctx.User);
     
     Properties.hasMany(ctx.Reviews, {
       sourceKey: 'id',
-      foreignKey: 'propertiesId',
+      foreignKey: 'propertiId',
       onDelete: 'CASCADE',
     });
   }

@@ -3,7 +3,7 @@ import * as awilix from 'awilix';
 
 import {Sequelize} from 'sequelize';
 import config from "../config";
-import modelContainer, { IModelContainer } from './models';
+import modelContainer, { IModelContainer } from './models/index';
 
 
 export interface IContextContainer extends IModelContainer {

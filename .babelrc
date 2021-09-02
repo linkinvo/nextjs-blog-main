@@ -8,6 +8,7 @@
                 ],
                 "alias": {
                     "src": "./src",
+                    "server": "./server",
                     "styles": "./styles"
                 },
                 "extensions": [

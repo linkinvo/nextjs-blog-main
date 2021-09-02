@@ -11,7 +11,8 @@ export default class ReviewsController extends BaseContext {
   @route("/get")
   @GET()
   async getAll(req, res) {
-    const reviews = await this.di.Reviews.findAll();
+    const { Properties, Reviews, User} = this.di;
+    const reviews = await Reviews.findAll({ include: [{ model: Properties }, { model: User }]});
     return res.json(reviews);
   }
 
@@ -19,7 +20,8 @@ export default class ReviewsController extends BaseContext {
   @GET()
   async getOne(req, res) {
     const { id } = req.params;
-    this.di.Reviews.findOne({where: { id }})
+    const { Properties, Reviews, User} = this.di;
+      Reviews.findOne({where: { id },  include: [{ model: Properties }, { model: User }]})
     .then((reviews) => res.json(reviews));
   }
   
