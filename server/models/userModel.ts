@@ -108,18 +108,12 @@ export default (ctx: IContextContainer) => {
 
   User.initModel = () => {
 
-    // User.belongsToMany(ctx.Properties, {through: ctx.Reviews })
-    // User.belongsTo(ctx.Properties, { as: "properties", foreignKey: "userId"})
-
     User.hasMany(ctx.Properties, {
       sourceKey: "id",
       foreignKey: "userId",
       onDelete: "CASCADE",
       as: "properties",
     });
-
-
-    //User.belongsTo(ctx.Properties);
 
     User.hasMany(ctx.Reviews, {
       sourceKey: "id",

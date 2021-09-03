@@ -7,7 +7,8 @@ const SearchFilters = () => {
         setActive(!active);
     }
     return (
-        <>
+        <div className='xl:flex xl:overflow-y-scroll'
+        >
     <section className="bg-gray-800 xl:w-72">
     <div className='flex justify-between bg-gray-800 px-14 py-3'>
         <div className='relative max-w-xs w-full'>
@@ -58,7 +59,7 @@ const SearchFilters = () => {
         </button>
         </div>
         {active ?
-        <form className='xl:flex xl:flex-col xl:justify-between'>
+        <form className='hidden xl:h-full xl:flex xl:flex-col xl:justify-between'>
             <div className='lg:flex xl:block xl:overflow-y-auto'>
         <div className='px-4 py-4 border-t border-gray-900 lg:w-1/3 xl:border-t-0 xl:w-full'>
             <div className=' flex flex-wrap -mx-2'>
@@ -143,17 +144,17 @@ const SearchFilters = () => {
            </div>
         </div>
 
-            </div>
         <div className='bg-gray-900 px-4 py-4 sm:text-right'>
-            <button className='block w-full sm:w-auto sm:inline-block bg-indigo-500 hover:bg-indigo-400 font-semibold text-white px-4 py-2 rounded-lg xl:block xl:w-full'>Update results</button>
+            <button className='block w-full sm:w-auto sm:inline-block  bg-indigo-500 hover:bg-indigo-400 font-medium text-white px-4 py-2 rounded-lg xl:block xl:w-full'>Update results</button>
         </div>
+            </div>
     </form>
 
     : ''
     
     }
     </section>
-        </>
+        </div>
     );
 };
 

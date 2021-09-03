@@ -13,7 +13,7 @@ export default function Home({getProperties}) {
       </div>
       <div className='xl:flex-1 xl:flex '>
         <SearchFilters />
-        <main className='mt-6 '>
+        <main className='mt-6 xl:flex-1 xl:overflow-y-scroll'>
           <div className='px-4 xl:px-8'>
             <h3 className='text-gray-900 text-xl'>Los Angeles</h3>
             <p className='text-gray-600'>Live like the stars in these luxurious Southern California estates.</p>

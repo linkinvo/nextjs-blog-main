@@ -2,7 +2,7 @@
 
 const users = [
   {
-    firstName: 'Luke Skywalker',
+    firstName: 'Luke',
     lastName: 'Skywalker',
     role: 'ClIENT',
     phone: '+380955746522',
