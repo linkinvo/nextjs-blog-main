@@ -98,7 +98,7 @@ const login = () => {
         <br/>
         <p className="flex flex-wrap justify-center gap-5 text-xs text-gray-600 sm:text-sm">
            No account ?  
-           <Link  href={`/register`}>
+           <Link  href={`/registration`}>
            <a className=' text-blue-500' href='#'>sign Up</a>
            </Link>
         </p>

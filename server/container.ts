@@ -1,19 +1,34 @@
 const mysql2 = require("mysql2");
 import * as awilix from 'awilix';
-
 import {Sequelize} from 'sequelize';
 import config from "../config";
+
+import passport, { PassportStatic } from 'passport';
 import modelContainer, { IModelContainer } from './models/index';
+import SignUpStrategy from './passports/SingUpStrategy';
+import SignInStrategy from './passports/SignInStrategy';
 
 
 export interface IContextContainer extends IModelContainer {
   config: any;
   db: Sequelize;
+  passport: PassportStatic;
+  SignUpStrategy: SignUpStrategy;
+  SignInStrategy: SignInStrategy;
 }
 
 const container = awilix.createContainer<IContextContainer>({
   injectionMode: awilix.InjectionMode.PROXY,
 });
+
+export const passportFC = (ctx: IContextContainer) => {
+  passport.use('local-login', ctx.SignInStrategy.strategy);
+  passport.use('local-signup', ctx.SignUpStrategy.strategy);
+  console.log('LOCAL-SIGNUP',  ctx.SignUpStrategy.strategy);
+
+
+  return passport;
+}
 
 const createDB = (ctx: IContextContainer) => {
   return new Sequelize(
@@ -23,7 +38,7 @@ const createDB = (ctx: IContextContainer) => {
       {
           dialect: ctx.config.db.dialect,
           dialectModule: mysql2,
-      }
+      },
   );
 }
 
@@ -31,8 +46,13 @@ container.register({
   ...modelContainer,
   config: awilix.asValue(config),
   db: awilix.asFunction(createDB).singleton(),
-
+  passport: awilix.asFunction(passportFC).singleton(),
+  SignUpStrategy: awilix.asClass(SignUpStrategy).singleton(),
+  SignInStrategy: awilix.asClass(SignInStrategy).singleton(),
 });
+
+
+
 
 // container.loadModules(['models/**/*.ts'], {
 //     resolverOptions: {

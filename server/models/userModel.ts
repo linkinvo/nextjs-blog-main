@@ -94,17 +94,17 @@ export default (ctx: IContextContainer) => {
     },
   });
 
-  // User.beforeSave(async User => {
-  //     try {
-  //         if (User.changed('password')) {
-  //             const salt = await bcrypt.genSalt(10);
-  //             const hash = await bcrypt.hash(User.password, salt);
-  //             User.password = hash;
-  //         }
-  //     } catch (err) {
-  //         throw new Error(err);
-  //     }
-  // });
+  User.beforeSave(async User => {
+      try {
+          if (User.changed('password')) {
+              const salt = await bcrypt.genSalt(10);
+              const hash = await bcrypt.hash(User.password, salt);
+              User.password = hash;
+          }
+      } catch (err) {
+          throw new Error(err);
+      }
+  });
 
   User.initModel = () => {
 

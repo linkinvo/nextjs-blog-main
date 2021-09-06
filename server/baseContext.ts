@@ -1,5 +1,11 @@
 import { IContextContainer } from "./container";
 
+declare global {
+    interface Response {
+            answer: (data: any, message?: any, status?: number) => void;
+        }
+}
+
 
 
 export default class BaseContext {
@@ -13,6 +19,9 @@ export default class BaseContext {
             console.log('initModels', this.constructor.name);
             opts.initModels();
             BaseContext.stopInit = true;
-        }    
+        }   
+        // interface Response {
+        //     answer: (data: any, message?: any, status?: number) => void;
+        // } 
     }
 }
