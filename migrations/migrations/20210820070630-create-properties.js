@@ -11,8 +11,8 @@ module.exports = {
         price int(11) NOT NULL,
         beds int(11) NOT NULL,
         baths int(11) NOT NULL,
-        createdAt bigint(20) NOT NULL,
-        updatedAt bigint(20) NOT NULL,
+        createdAt bigint(20),
+        updatedAt bigint(20),
         PRIMARY KEY (id)
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
     `);

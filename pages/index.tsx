@@ -57,7 +57,7 @@ export const Card = (props: CardProps) => {
     <div className='mt-10 sm:mt-0 sm:max-w-xs sm:w-full sm:flex-shrink-0 sm:px-2'>
       <div className='relative pb-5/6'>
       <Link key={property.id} href={`/properties/${property.id}`}>
-        <img className='absolute insert-0 h-full rounded-lg shadow-md object-cover' src={img} alt="modern-home" />
+        <a><img className='absolute insert-0 h-full rounded-lg shadow-md object-cover' src={img} alt="modern-home" /></a>
       </Link>
       </div>
       <div className='relative px-4 -mt-16'>

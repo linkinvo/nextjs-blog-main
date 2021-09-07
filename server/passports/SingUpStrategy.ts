@@ -9,7 +9,6 @@ export default class SignUpStrategy extends BaseContext {
 
     get strategy() {
         return this.strategyUser;
-        
     }
 
     constructor(opts: IContextContainer) {
@@ -29,15 +28,12 @@ export default class SignUpStrategy extends BaseContext {
 
     public async verifyRequestUser(req: Request, email: string, password: string, done: any) {
         const { User } = this.di;
-        const user = await User.findOne({
+        let user = await User.findOne({
             where : { email }
         });
         if (user) {
-            
             return done({ email: 'That e-mail already taken!' });
-
         }
-
 
         const { firstName, lastName, phone, role } = req.body;
         
@@ -50,17 +46,19 @@ export default class SignUpStrategy extends BaseContext {
             role: role,
         }
 
-        const createUser = await User.create(userData)
-         .then((user: any) => {
-                            console.log('CREATEuserJSON', createUser.toJSON());
-                return done(null, {
-                    id: user.id
-                });
-            })
-            .catch((error: any) => {
-                console.log(error);
-                return done(error.errmsg);
-            })
+        user = await User.create(userData);
+        console.log('CREATEuserJSON', user.toJSON());
+        return done(null, {
+            id: user.id
+        });
+
+        //  .then((user: any) => {
+                          
+        //     })
+        //     .catch((error: any) => {
+        //         console.log(error);
+        //         return done(error.errmsg);
+        //     })
 
 
     // (async () => {

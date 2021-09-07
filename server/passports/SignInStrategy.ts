@@ -1,7 +1,10 @@
 import BaseContext from "../baseContext";
 import passportLocal from 'passport-local';
+import bcrypt from 'bcrypt';
 import { IContextContainer } from "../container";
+import jwt from 'jsonwebtoken';
 import { Request } from 'express';
+import config from '../../config';
 
 export default class SignInStrategy extends BaseContext {
     private strategyUser: passportLocal.Strategy;
@@ -11,29 +14,46 @@ export default class SignInStrategy extends BaseContext {
     }
 
     constructor(opts: IContextContainer) {
-        super(opts);
-
+        super(opts);        
         this.verifyRequestUser = this.verifyRequestUser.bind(this);
 
         this.strategyUser = new passportLocal.Strategy({
             passwordField: 'password',
             usernameField: 'email',
             passReqToCallback: true,
-            // session: false,
-
+            session: false,
+ 
         }, this.verifyRequestUser);
     }
 
     public async verifyRequestUser(req: Request, email: string, password: string, done: any) {
-        
+
         const { User } = this.di;
-        const user = await User.findOne({
-            where : { email }
+        let user = await User.findOne({
+            where: { email }
         });
 
         if (!user) {
-            return done('Incorrect email or password');
+            return done('Incorrect password');
 
         }
+        if (!user.password) {
+            return done('Your account is banned.Please contact support.')
+        }
+
+        const bcryptRes = await bcrypt.compareSync(password, user.password);
+    console.log('[[[ user.password  ]]]]', password)
+        if (!bcryptRes) {
+            return done('Incorrect password');
+        }
+
+        const payload = {
+            sub: user.id
+        };
+        const token = jwt.sign(payload, config.jwtSecret);
+        user.token = token;
+        user.save();
+        
+        return done(null, payload);
     }
 }

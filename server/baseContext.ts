@@ -1,9 +1,11 @@
 import { IContextContainer } from "./container";
 
 declare global {
-    interface Response {
+    namespace Express {
+        interface Response {
             answer: (data: any, message?: any, status?: number) => void;
         }
+    }
 }
 
 
@@ -20,8 +22,6 @@ export default class BaseContext {
             opts.initModels();
             BaseContext.stopInit = true;
         }   
-        // interface Response {
-        //     answer: (data: any, message?: any, status?: number) => void;
-        // } 
+         
     }
 }

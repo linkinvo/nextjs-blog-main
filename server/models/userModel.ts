@@ -7,6 +7,7 @@ import { IContextContainer } from '../container';
 
 
 interface IUser extends Model {
+    token?: string;
     id: number;
     first_name: string;
     last_name: string;
@@ -36,7 +37,7 @@ export default (ctx: IContextContainer) => {
       allowNull: false,
       validate: {
         len: {
-          args: [6, 255],
+          args: [4, 255],
           msg: "First Name must be between 6 and 255 characters in length",
         },
       },
@@ -46,7 +47,7 @@ export default (ctx: IContextContainer) => {
       allowNull: false,
       validate: {
         len: {
-          args: [6, 255],
+          args: [4, 255],
           msg: "Last Name must be between 6 and 255 characters in length",
         },
       },
@@ -57,7 +58,7 @@ export default (ctx: IContextContainer) => {
       unique: true,
       validate: {
         len: {
-          args: [6, 255],
+          args: [4, 255],
           msg: "Email address must be between 6 and 255 characters in length",
         },
         isEmail: {
@@ -91,7 +92,9 @@ export default (ctx: IContextContainer) => {
     updatedAt: {
       allowNull: false,
       type: DataTypes.BIGINT,
-    },
+    },    
+  },{
+    timestamps: false,
   });
 
   User.beforeSave(async User => {

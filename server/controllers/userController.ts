@@ -11,38 +11,45 @@ export default class UserController extends BaseContext {
   @POST()
   public registration(req: Request, res: Response, next: NextFunction) {
     const { passport } = this.di;
-    console.log('AAAAAAAAAA passport AAAAAAAAAA', passport);
-    
-    return passport.authenticate('local-signup', (errors, identity) => {
-      if (errors) {
-        console.log('Register errors: ', errors);
-        res.answer(null, errors)
 
-      } else if (identity) {
-        res.answer([identity], 'Registration completed successfully!!! You can now log in.')
+    return passport.authenticate('local-signup', (errors, identity) => {
+      if (identity) {
+        res.json({
+          identity,
+          message: 'Registration completed successfully!!! You can now log in.'
+        })
       } else {
         console.log('Register catch : ', errors)
-        res.answer(null, 'Could not process')
+        res.status(301).json({
+            identity: null,
+            message: 'Could not process'
+        })
       }
     })(req, res, next);
   }
 
-
-  @route('/login')
   @POST()
-  public login(req: Request, res: Response, next: NextFunction) {
-    console.log('LOGIN controller');
+    @route('/login')
+    public login(req: Request, res: Response, next: NextFunction) {
+        const { passport } = this.di;
 
-    const { passport } = this.di;
-
-    return passport.authenticate('local-login', (err, identity) => {
+        return passport.authenticate('local-login', (errors, identity) => {
       console.log('login controller passport ', identity);
-      if (err) {
-        return res.answer(null, err);
-      }
-      return res.answer(identity);
-    })(req, res, next);
-  }
+          if (identity) {
+            res.json({
+              identity,
+              message: 'You have successfully logged in!'
+            })
+          } else {
+            console.log('Validations denied : ', errors)
+            res.status(301).json({
+                identity: null,
+                message: 'Could not process'
+            })
+          }            
+        })(req, res, next);
+    }
+
 
   @route("/check")
   @POST()
