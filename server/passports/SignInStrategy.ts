@@ -34,16 +34,18 @@ export default class SignInStrategy extends BaseContext {
         });
 
         if (!user) {
-            return done('Incorrect password');
 
+            return done('Incorrect password');
         }
         if (!user.password) {
+
             return done('Your account is banned.Please contact support.')
         }
 
-        const bcryptRes = await bcrypt.compareSync(password, user.password);
-    console.log('[[[ user.password  ]]]]', password)
+    const bcryptRes = await bcrypt.compare(password, user.password);
+          console.log('[[[ user.password  ]]]]', password)
         if (!bcryptRes) {
+            
             return done('Incorrect password');
         }
 

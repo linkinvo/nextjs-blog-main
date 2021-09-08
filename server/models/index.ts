@@ -25,5 +25,4 @@ export default {
   User: awilix.asFunction(User).singleton(),
   Properties: awilix.asFunction(Properties).singleton(),
   Reviews: awilix.asFunction(Reviews).singleton(),
-  // SiteSetting: awilix.asFunction(SiteSetting).singleton(),
 }

@@ -115,6 +115,20 @@ const registration = () => {
                     name="phone"
                   />
                 </div>
+                <div className="mb-1 sm:mb-2">
+                  <label
+                    htmlFor="email"
+                    className="inline-block mb-1 font-medium"
+                  >
+                    Role
+                  </label>
+                  <select
+                    placeholder=""
+                    required
+                    className="flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline"
+                    id="role"
+                  ></select>
+                </div>
                 <div className="mt-4 mb-2 sm:mb-4">
                   <button
                     type="submit"

@@ -3,13 +3,14 @@ import * as awilix from 'awilix';
 import {Sequelize} from 'sequelize';
 import config from "../config";
 
+import services, {IServicesContainer} from './services'
 import passport, { PassportStatic } from 'passport';
 import modelContainer, { IModelContainer } from './models/index';
 import SignUpStrategy from './passports/SingUpStrategy';
 import SignInStrategy from './passports/SignInStrategy';
 
 
-export interface IContextContainer extends IModelContainer {
+export interface IContextContainer extends IModelContainer, IServicesContainer {
   config: any;
   db: Sequelize;
   passport: PassportStatic;
@@ -42,6 +43,7 @@ const createDB = (ctx: IContextContainer) => {
 
 container.register({
   ...modelContainer,
+  ...services,
   config: awilix.asValue(config),
   db: awilix.asFunction(createDB).singleton(),
   passport: awilix.asFunction(passportFC).singleton(),

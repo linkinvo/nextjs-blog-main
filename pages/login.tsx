@@ -5,7 +5,7 @@ const login = () => {
 <>
 <div className="relative">
     <img   // https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80  https://vwartclub.com/media/projects/1700/2.jpg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=750&amp;w=1260
-        src="https://cdn.homedsgn.com/wp-content/uploads/2018/07/Of-House-15.jpg"
+        src="https://pixabay.com/get/g8e4a4c3d81fcbff853f741eba0abd6ddb09fba082b250da41a93f4a88f16805fc6a105f910a14fef86f5bcc46df121c5_1920.jpg"
         className="absolute inset-0 object-cover w-full h-full"
         alt=""
     />
@@ -49,7 +49,7 @@ const login = () => {
         <div className="w-full max-w-xl xl:px-8 xl:w-5/12">
             <div className="bg-white rounded shadow-2xl p-7 sm:p-10">
                 <h3 className="mb-4 text-xl font-semibold sm:text-center sm:mb-6 sm:text-2xl">
-                    Welcome ! let's register
+                    Welcome ! let's login 
                 </h3>
                 <br/>
     <form>

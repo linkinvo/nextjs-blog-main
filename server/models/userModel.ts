@@ -15,8 +15,8 @@ interface IUser extends Model {
     password: string;
     phone: string;
     role: string;
-    createdAt: BigInt;
-    updatedAt: BigInt;
+    createdAt: number;
+    updatedAt: number;
 }
 
 export type UserType = typeof Model & {
@@ -86,11 +86,11 @@ export default (ctx: IContextContainer) => {
     },
 
     createdAt: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.BIGINT,
     },
     updatedAt: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.BIGINT,
     },    
   },{
@@ -103,6 +103,11 @@ export default (ctx: IContextContainer) => {
               const salt = await bcrypt.genSalt(10);
               const hash = await bcrypt.hash(User.password, salt);
               User.password = hash;
+
+              User.updatedAt = Date.now() / 1000;
+              if (User.isNewRecord) {
+                User.createdAt = Date.now() / 1000;
+              }
           }
       } catch (err) {
           throw new Error(err);

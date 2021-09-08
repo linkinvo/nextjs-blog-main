@@ -51,39 +51,5 @@ export default class SignUpStrategy extends BaseContext {
         return done(null, {
             id: user.id
         });
-
-        //  .then((user: any) => {
-                          
-        //     })
-        //     .catch((error: any) => {
-        //         console.log(error);
-        //         return done(error.errmsg);
-        //     })
-
-
-    // (async () => {
-    //     const userData = {
-    //         firstName: firstName && firstName.trim(),
-    //         lastName: lastName && lastName.trim(),
-    //         email: email && email.trim().toLowerCase(),
-    //         password: password && password.trim(),
-    //         phone: phone && phone.trim(),
-    //         role: role,
-    //     }
-
-    //     const createUser = await User.create(userData)
-    //         .then((user: any) => {
-    //             console.log('CREATEuser', createUser);
-    //             console.log('CREATEuserJSON', createUser.toJSON());
-    //             return done(null, {
-    //                 id: user.id
-    //             });
-    //         })
-    //         .catch((error: any) => {
-    //             console.log(error);
-    //             return done(error.errmsg);
-    //         })
-    // })();
-
     }
 }
