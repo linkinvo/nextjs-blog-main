@@ -28,8 +28,8 @@ export default class SignInStrategy extends BaseContext {
 
     public async verifyRequestUser(req: Request, email: string, password: string, done: any) {
 
-        const { User } = this.di;
-        let user = await User.findOne({
+        const { UserModel } = this.di;
+        let user = await UserModel.findOne({
             where: { email }
         });
 

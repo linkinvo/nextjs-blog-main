@@ -2,22 +2,34 @@ import BaseContext from '../baseContext';
 
 export default class UserService extends BaseContext {
     public findAll() {
-        const { User } = this.di;
-        return User.find({});
+        const { UserModel } = this.di;
+        return UserModel.findAll({});
+        
     }
 
     public async save(body, id) {
-        const { User } = this.di;
-        let user = await User.findById(id);
+        const { UserModel } = this.di;
+        let user = await UserModel.findByPk(id);
+        if (isNaN(id)) return Promise.reject('Parameter is not a number!');
         if (user) {
             user.set(body);
         } else {
-            user = new User(body);
+            user =  UserModel.build(body);
         }
         return user.save();
     }
 
     public findOneByID(id) {
-        const { User } = this.di;
-        return User.findById(id);
+        const { UserModel } = this.di;
+        if (isNaN(id)) return Promise.reject('Parameter is not a number!');
+        return UserModel.findByPk(id)
     }
+
+
+
+    
+    // public deleteByID(id) {
+    //     const { UserModel } = this.di;
+    //     return UserModel.findByIdAndDelete(id);
+    // }
+}

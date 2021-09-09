@@ -6,9 +6,7 @@ import  { route, GET, POST } from "awilix-express";
 
 @route("/api/users")
 export default class UserController extends BaseContext {
- 
-
-  
+   
   @route("/registration")
   @POST()
   public registration(req: Request, res: Response, next: NextFunction) {
@@ -44,7 +42,7 @@ export default class UserController extends BaseContext {
         })
       } else {
         console.log('Validations denied : ', errors)
-        res.status(301).json({
+        res.json({
           identity: null,
           message: 'Could not process validations'
         })
@@ -52,19 +50,28 @@ export default class UserController extends BaseContext {
     })(req, res, next);
   }
 
-
   @route('/')
   @GET()
   getAll(req: Request, res: Response) {
     const { UserService } = this.di
-
     const result = UserService.findAll()
-      .then((data) => {
-        res.json(data, "Success")
-      })
-      .catch((err) => {
-        res.json(null, err)
-      })
+    .then(users => {
+      const props = {
+          data: users,
+          message: "users are found successfully",
+          error: false
+      }
+      res.send(props);
+  })
+  .catch(err => {
+      const props = {
+          data: null,
+          message: err,
+          error: true
+      }
+      res.status(500).send(props);
+  });
+      return result
   }
 
   @route('/save/:id')
@@ -73,22 +80,82 @@ export default class UserController extends BaseContext {
     const { UserService } = this.di;
 
     const result = UserService.save(req.body, req.params.id)
-      .then((data) => {
-        res.json(data, "Success")
-      })
-      .catch((err) => {
-        res.json(null, err)
-      })
+    .then(users => {
+      const props = {
+          data: users,
+          message: "users are found successfully",
+          error: false
+      }
+      res.send(props);
+  })
+  .catch(err => {
+      const props = {
+          data: null,
+          message: err,
+          error: true
+      }
+      res.status(500).send(props);
+  });
       
       return result
     }
    
 
-  // @route('/:id')
-  // @GET()
-  // getById(req, res) {
-  //   const {id} = req.params;
-  //   this.di.User.findOne({where: {id}})
-  //   .then((user) => res.json(user))
-  
+  @route('/:id')
+  @GET()
+  getById(req: Request, res: Response) {
+    const { UserService } = this.di;
+        
+    const result = UserService.findOneByID(req.params.id)
+    .then(users => {
+        const props = {
+            data: users,
+            message: "users are found successfully",
+            error: false
+        }
+        res.send(props);
+    })
+    .catch(err => {
+        const props = {
+            data: null,
+            message: err,
+            error: true
+        }
+        res.status(500).send(props);
+    });
+    return result
 }
+
+
+  // @route('/delete/:id')
+  // @DELETE()
+  // delete(req: Request, res: Response) {
+  //   const { UserService } = this.di;
+
+  //   const result = UserService.deleteByID(req.params.id)
+  //     .then((data) => {
+  //       res.status(200).send(data)
+  //     })
+  //     .catch((err) => {
+  //       res.json(null, err, "error")
+  //     })
+  //     return result
+  // }
+
+}
+//   .then(users => {
+//     const props = {
+//         data: users,
+//         message: "users are found successfully",
+//         error: false
+//     }
+//     res.send(props);
+// })
+// .catch(err => {
+    // const props = {
+    //     data: null,
+    //     message: err,
+    //     error: true
+    // }
+//     res.status(500).send(props);
+// })

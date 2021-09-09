@@ -11,7 +11,7 @@ export default function Property(props: CardProperties, {getProperties}) {
   const { query } = useRouter()
 
   const property = props.getProperties;
-  const { baths, beds, img, description, price , reviews, user} = property;
+  const { baths, beds, img, description, price , reviews} = property;
 
   return (
     <div className="min-h-screen bg-gray-200 antialiased xl:flex xl:flex-col xl:h-screen">

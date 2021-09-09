@@ -25,7 +25,7 @@ export type UserType = typeof Model & {
 }
 
 export default (ctx: IContextContainer) => {
-  const User = <UserType>ctx.db.define("users", {
+  const UserModel = <UserType>ctx.db.define("users", {
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -97,33 +97,33 @@ export default (ctx: IContextContainer) => {
     timestamps: false,
   });
 
-  User.beforeSave(async User => {
+  UserModel.beforeSave(async User => {
       try {
           if (User.changed('password')) {
               const salt = await bcrypt.genSalt(10);
               const hash = await bcrypt.hash(User.password, salt);
               User.password = hash;
 
-              User.updatedAt = Date.now() / 1000;
-              if (User.isNewRecord) {
-                User.createdAt = Date.now() / 1000;
-              }
-          }
+            }
+            User.updatedAt = Date.now() / 1000;
+            if (User.isNewRecord) {
+              User.createdAt = Date.now() / 1000;
+            }
       } catch (err) {
           throw new Error(err);
       }
   });
 
-  User.initModel = () => {
+  UserModel.initModel = () => {
 
-    User.hasMany(ctx.Properties, {
+    UserModel.hasMany(ctx.PropertiModel, {
       sourceKey: "id",
       foreignKey: "userId",
       onDelete: "CASCADE",
       as: "properties",
     });
 
-    User.hasMany(ctx.Reviews, {
+    UserModel.hasMany(ctx.ReviewsModel, {
       sourceKey: "id",
       foreignKey: "userId",
       onDelete: "CASCADE",
@@ -131,5 +131,5 @@ export default (ctx: IContextContainer) => {
     });
   };
 
-  return User;
+  return UserModel;
 };

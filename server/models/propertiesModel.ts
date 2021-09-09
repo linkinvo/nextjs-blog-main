@@ -21,7 +21,7 @@ export type PropertiesType = typeof Model & {
 
 export default (ctx: IContextContainer) => {
   
-  const Properties = <PropertiesType>ctx.db.define("properties", {
+  const PropertiModel = <PropertiesType>ctx.db.define("properties", {
     id: {allowNull: false,autoIncrement: true,primaryKey: true,type: DataTypes.INTEGER,},
     img: { type: DataTypes.STRING, allowNull: false },
     description: { type: DataTypes.STRING, allowNull: false },
@@ -33,16 +33,16 @@ export default (ctx: IContextContainer) => {
     userId: { type: DataTypes.INTEGER },
   });
 
-  Properties.initModel = () => {
+  PropertiModel.initModel = () => {
 
-    Properties.belongsTo(ctx.User);
+    PropertiModel.belongsTo(ctx.UserModel);
     
-    Properties.hasMany(ctx.Reviews, {
+    PropertiModel.hasMany(ctx.ReviewsModel, {
       sourceKey: 'id',
       foreignKey: 'propertiId',
       onDelete: 'CASCADE',
     });
   }
 
-  return Properties;
+  return PropertiModel;
 };

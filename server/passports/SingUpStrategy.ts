@@ -27,8 +27,8 @@ export default class SignUpStrategy extends BaseContext {
     }
 
     public async verifyRequestUser(req: Request, email: string, password: string, done: any) {
-        const { User } = this.di;
-        let user = await User.findOne({
+        const { UserModel } = this.di;
+        let user = await UserModel.findOne({
             where : { email }
         });
         if (user) {
@@ -46,7 +46,7 @@ export default class SignUpStrategy extends BaseContext {
             role: role,
         }
 
-        user = await User.create(userData);
+        user = await UserModel.create(userData);
         console.log('CREATEuserJSON', user.toJSON());
         return done(null, {
             id: user.id

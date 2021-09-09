@@ -1,28 +1,28 @@
 import * as awilix from 'awilix';
-import User, { UserType } from './userModel';
-import Properties, {PropertiesType} from './propertiesModel'
-import Reviews , {ReviewsType} from './reviewsModel'
+import UserModel, { UserType } from './userModel';
+import PropertiModel, {PropertiesType} from './propertiesModel'
+import ReviewsModel , {ReviewsType} from './reviewsModel'
 import { IContextContainer } from '../container';
 
 export interface IModelContainer {
   initModels: () => void;
-  User: UserType;
-  Properties: PropertiesType;
-  Reviews: ReviewsType;
+  UserModel: UserType;
+  PropertiModel: PropertiesType;
+  ReviewsModel: ReviewsType;
 }
 
 const initModels = (ctx: IContextContainer)  => {
-  const { Reviews, User, Properties } = ctx;
+  const { ReviewsModel, UserModel, PropertiModel } = ctx;
   return () => {
-      User.initModel(),
-      Properties.initModel(),
-      Reviews.initModel()
+    UserModel.initModel(),
+    PropertiModel.initModel(),
+    ReviewsModel.initModel()
   }
 }
 
 export default {
   initModels: awilix.asFunction(initModels).singleton(),
-  User: awilix.asFunction(User).singleton(),
-  Properties: awilix.asFunction(Properties).singleton(),
-  Reviews: awilix.asFunction(Reviews).singleton(),
+  UserModel: awilix.asFunction(UserModel).singleton(),
+  PropertiModel: awilix.asFunction(PropertiModel).singleton(),
+  ReviewsModel: awilix.asFunction(ReviewsModel).singleton(),
 }
