@@ -20,7 +20,6 @@ export default class ReviewsServices extends BaseContext {
     public async save(body, id) {
         const { ReviewsModel } = this.di;
         let reviews = await ReviewsModel.findByPk(id);
-        if (isNaN(id)) return Promise.reject('Parameter is not a number!');
         if (reviews) {
             reviews.set(body);
         } else {

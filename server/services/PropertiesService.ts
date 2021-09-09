@@ -2,9 +2,9 @@ import BaseContext from "../baseContext";
 
 export default class PropertiesService extends BaseContext {
 
-    public async findAll() {
+    public  findAll() {
         const { PropertiModel, ReviewsModel, UserModel } = this.di;
-        const properties = await PropertiModel.findAll({
+        const properties =  PropertiModel.findAll({
             include: [
                 { 
                     model: ReviewsModel 
@@ -20,7 +20,6 @@ export default class PropertiesService extends BaseContext {
     public async save(body, id) {
         const { PropertiModel } = this.di;
         let properties = await PropertiModel.findByPk(id);
-        if (isNaN(id)) return Promise.reject('Parameter is not a number!');
         if (properties) {
             properties.set(body)
         }else {
@@ -29,10 +28,10 @@ export default class PropertiesService extends BaseContext {
         return properties.save();
     }
 
-    public async findOneByID(id) {
+    public findOneByID(id) {
         const { PropertiModel, ReviewsModel, UserModel } = this.di;
         if (isNaN(id)) return Promise.reject('Parameter is not a number!');
-        const properties = await PropertiModel.findOne({
+        const properties =  PropertiModel.findOne({
             where: { id },
             include: [
               {

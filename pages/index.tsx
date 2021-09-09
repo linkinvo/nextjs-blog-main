@@ -1,11 +1,9 @@
 import Link from 'next/link';
 import { SiteHeader } from './../components/SiteHeader';
 import SearchFilters from 'components/SearchFilters';
-import router, { useRouter } from 'next/router';
-
 
 export default function Home({getProperties}) {
-  const router = useRouter
+  if (getProperties.error) return <div>{getProperties.message}</div>
   return (
     <div className="min-h-screen bg-gray-200 antialiased xl:flex xl:flex-col xl:h-screen">
       <div className='xl:flex-shrink-0'>
@@ -22,7 +20,7 @@ export default function Home({getProperties}) {
             <div className='flex flex-wrap px-4 sm:inline-flex sm:pt-2 sm:pb-8 xl:px-8 gap-5'>
 
               {
-                getProperties && getProperties.map((property) => 
+                getProperties.data && getProperties.data.map((property) => 
                     <Card key={'card_' + property.id} property={property} />
                 )
               }
@@ -36,7 +34,7 @@ export default function Home({getProperties}) {
 
 
 Home.getInitialProps = async (ctx) => {
-  const res = await fetch("http://localhost:3000/api/properties/get");
+  const res = await fetch("http://localhost:3000/api/properties/");
   const  getProperties = await res.json();
   
   return {
