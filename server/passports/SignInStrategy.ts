@@ -14,7 +14,7 @@ export default class SignInStrategy extends BaseContext {
     }
 
     constructor(opts: IContextContainer) {
-        super(opts);        
+        super(opts);
         this.verifyRequestUser = this.verifyRequestUser.bind(this);
 
         this.strategyUser = new passportLocal.Strategy({
@@ -22,7 +22,7 @@ export default class SignInStrategy extends BaseContext {
             usernameField: 'email',
             passReqToCallback: true,
             session: false,
- 
+
         }, this.verifyRequestUser);
     }
 
@@ -42,20 +42,23 @@ export default class SignInStrategy extends BaseContext {
             return done('Your account is banned.Please contact support.')
         }
 
-    const bcryptRes = await bcrypt.compare(password, user.password);
-          console.log('[[[ user.password  ]]]]', password)
+        const bcryptRes = await bcrypt.compare(password, user.password);
+        console.log('[[[ user.password  ]]]]', password)
         if (!bcryptRes) {
-            
+
             return done('Incorrect password');
         }
 
         const payload = {
-            sub: user.id
+            sub: user.id,
         };
+
         const token = jwt.sign(payload, config.jwtSecret);
+        console.log('token == SignInStrategy : ', token);
+        
         user.token = token;
         user.save();
-        
+
         return done(null, payload);
     }
 }

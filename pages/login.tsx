@@ -5,9 +5,9 @@ const login = () => {
 <>
 <div className="relative">
     <img   // https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80  https://vwartclub.com/media/projects/1700/2.jpg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=750&amp;w=1260
-        src="https://pixabay.com/get/g8e4a4c3d81fcbff853f741eba0abd6ddb09fba082b250da41a93f4a88f16805fc6a105f910a14fef86f5bcc46df121c5_1920.jpg"
+        src="https://vwartclub.com/media/projects/1700/2.jpg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=750&amp;w=1260"
         className="absolute inset-0 object-cover w-full h-full"
-        alt=""
+        alt="img"
     />
     <div className="relative bg-opacity-75 bg-deep-purple-accent-700">
         <svg

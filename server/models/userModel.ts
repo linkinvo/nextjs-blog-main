@@ -110,7 +110,7 @@ export default (ctx: IContextContainer) => {
               User.createdAt = Date.now() / 1000;
             }
       } catch (err) {
-          throw new Error(err);
+          console.log(err);
       }
   });
 
