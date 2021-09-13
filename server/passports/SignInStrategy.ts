@@ -61,7 +61,8 @@ export default class SignInStrategy extends BaseContext {
         user.token = token;
         user.save();
 
-
+        
+        
         return done(null, {payload, token});
     }
 }

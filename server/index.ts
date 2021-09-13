@@ -7,7 +7,7 @@ import { loadControllers, scopePerRequest } from 'awilix-express';
 import fileUpload from 'express-fileupload'
 import {PassportStatic} from 'passport';
 import container from "./container";
-import { IIdentity } from "./common";
+import { IIdentity } from "../src/common";
 import { Request, Response, NextFunction } from 'express';
 import cookieParser from 'cookie-parser';
 import cookieSession from 'cookie-session';
@@ -38,6 +38,8 @@ app.prepare().then(() => {
     keys: [config.jwtSecret],
     maxAge: 312460601000,
   }));
+  
+  
   server.use(fileUpload({}));
   server.use(acl);
 
@@ -120,5 +122,5 @@ export const IGNORS = [
   '/styles.chunk.css.map',
   '/__nextjs',
   '/api/users/login',
-  '/api/users/register'
+  '/api/users/registration'
 ];

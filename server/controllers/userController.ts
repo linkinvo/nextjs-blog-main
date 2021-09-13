@@ -1,4 +1,4 @@
-import { IIdentity } from './../common';
+import { IIdentity } from '../../src/common';
 
 import BaseContext from '../baseContext';
 

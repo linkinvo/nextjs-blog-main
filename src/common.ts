@@ -5,3 +5,10 @@ export interface IIdentity {
     email: string;
     role: string;
 }
+
+export enum HTTP_METHOD {
+    PUT = 'PUT',
+    POST = 'POST',
+    GET = 'GET',
+    DELETE = 'DELETE',
+}
