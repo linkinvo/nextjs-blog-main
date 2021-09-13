@@ -52,7 +52,7 @@ const login = () => {
                     Welcome ! let's login 
                 </h3>
                 <br/>
-    <form>
+ <form action="/api/users/login" method="post">
         <div className="mb-1 sm:mb-2">
             <label
                 htmlFor="email"

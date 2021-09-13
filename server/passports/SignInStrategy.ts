@@ -43,15 +43,17 @@ export default class SignInStrategy extends BaseContext {
         }
 
         const bcryptRes = await bcrypt.compare(password, user.password);
-        console.log('[[[ user.password  ]]]]', password)
+        console.log('[[[ user.password ]]]]', password)
         if (!bcryptRes) {
 
             return done('Incorrect password');
         }
 
         const payload = {
-            sub: user.id,
+            id: user.id,
+            
         };
+
 
         const token = jwt.sign(payload, config.jwtSecret);
         console.log('token == SignInStrategy : ', token);
@@ -59,6 +61,7 @@ export default class SignInStrategy extends BaseContext {
         user.token = token;
         user.save();
 
-        return done(null, payload);
+
+        return done(null, {payload, token});
     }
 }

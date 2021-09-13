@@ -29,8 +29,7 @@ app.prepare().then(() => {
   const server = express()
 
   server.use(cookieParser())
-  server.use(acl);
-
+  
   server.use(bodyParser.json({ limit: '10mb' }));
   server.use(passport.initialize());
   server.use(bodyParser.urlencoded({ extended: true }));
@@ -40,6 +39,7 @@ app.prepare().then(() => {
     maxAge: 312460601000,
   }));
   server.use(fileUpload({}));
+  server.use(acl);
 
   server.use(scopePerRequest(container));
   const files = 'controllers/**/*.ts';
@@ -70,25 +70,29 @@ app.prepare().then(() => {
 const acl = (req: Request, res: Response, next: NextFunction) => {
   let useAcl = true
   const url = req.url
-  for (const item of ignore) {
+  for (const item of IGNORS) {
     if (url.startsWith(item)) {
       useAcl = false
     }
   }
 
   if (useAcl) {
+    console.log('ACL!!');
     const jwt = passport.authenticate('local-jwt', (err, identity) => {
       const isLogged = identity && identity.id ;
-      if (!isLogged) {
+
+      if (isLogged) {
         const isAPICall = req.path.toLowerCase().includes('api')
         if (isAPICall) {
-            res.status(401).json({
+            return res.json({
               data : null,
               message: 'You are not authorized to open this page',
               error: true,
             })
-        } else {
-            res.redirect('/');
+        }
+         else {
+            // return res.redirect('/');
+            return handle(req, res);
         }
       }
       req.identity = identity;
@@ -104,7 +108,17 @@ const acl = (req: Request, res: Response, next: NextFunction) => {
 
 
 
-export const ignore = [
-  'nextjs',
+
+export const IGNORS = [
   '/favicon.ico',
-]
+  '/_next',
+  '/static',
+  '/sitemap.xml',
+  '/robots.txt',
+  '/service-worker.js',
+  '/manifest.json',
+  '/styles.chunk.css.map',
+  '/__nextjs',
+  '/api/users/login',
+  '/api/users/register'
+];

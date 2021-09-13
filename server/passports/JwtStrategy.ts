@@ -29,20 +29,30 @@ export default class JwtStrategy extends BaseContext {
     }
 
     public verifyRequest(jwtPayload, done: VerifiedCallback) {
+        const { UserService } = this.di;
         console.log('jwt: verifyRequest', jwtPayload);
-        const user = this.di.UserService.findOneByID(jwtPayload.id);
-        console.log('verify request user', user);
-
-        if (user) {
-            return done(null, jwtPayload);
-        }
-        return done('Incorrect identity');
+        UserService.findOneByID(jwtPayload.id)
+            .then(user => {
+                console.log('verify request user', user);
+                return done(null, {
+                    id: user.id,
+                    firstName: user.first_name,
+                    lastName: user.last_name,
+                    role: user.role,
+                    email: user.email,
+                    // token: user.token
+                });
+            }).catch(err => {
+                return done('Incorrect identity');
+            });
     }
 
     public getJwtFromRequest(req: Request) {
         this.request = req;
         const getToken = ExtractJwt.fromAuthHeaderAsBearerToken();
-        console.log('getToken', getToken(req));
+        console.log('getToken!!!!!!!!!!!!!', getToken(req));
+        console.log('COOKIES', req.cookies['token']);
+        
         return getToken(req) || req.cookies['token'] || null;
     }
 }

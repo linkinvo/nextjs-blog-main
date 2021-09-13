@@ -30,46 +30,45 @@ export default class UserController extends BaseContext {
     })(req, res, next);
   }
 
+
+//   @POST()
+//   @route('/login')
+//   public login(req: Request, res: Response, next: NextFunction) {
+
+//     const { passport } = this.di;
+
+//     // tslint:disable-next-line: no-shadowed-variable
+//     return passport.authenticate('local-login', (err, identity: IIdentity) => {
+//         console.log('login controller passport', identity);
+//         if (err) {
+//             return res.json(null, err);
+//         }
+//         res.cookie('token', identity.token, { maxAge: 1000606024 });
+//         return res.json(identity);
+//     })(req, res, next);
+// }
+
+
   @POST()
   @route('/login')
   public login(req: Request, res: Response, next: NextFunction) {
-
     const { passport } = this.di;
 
-    // tslint:disable-next-line: no-shadowed-variable
-    return passport.authenticate('local-login', (err, identity: IIdentity) => {
-        console.log('login controller passport', identity);
-        if (err) {
-            return res.json(null, err);
-        }
-        res.cookie('token', identity.token, { maxAge: 1000606024 });
+    return passport.authenticate('local-login', (errors, identity) => {
+      console.log('login controller passport ', identity);
+      if (identity) {
+        res.cookie('token', identity.token, { maxAge: 1000606024},  {message: 'You have successfully logged in!'})
         return res.json(identity);
+      } else {
+        console.log('Validations denied : ', errors)
+        res.json({
+          identity: null,
+          message: 'Could not process validations'
+        })
+      }
     })(req, res, next);
-}
 
-
-  // @POST()
-  // @route('/login')
-  // public login(req: Request, res: Response, next: NextFunction) {
-  //   const { passport } = this.di;
-
-  //   return passport.authenticate('local-login', (errors, identity) => {
-  //     console.log('login controller passport ', identity);
-  //     if (identity) {
-        
-  //       res.cookie({
-  //         identity,
-  //         message: 'You have successfully logged in!'
-  //       })
-  //     } else {
-  //       console.log('Validations denied : ', errors)
-  //       res.json({
-  //         identity: null,
-  //         message: 'Could not process validations'
-  //       })
-  //     }
-  //   })(req, res, next);
-  // }
+  }
 
 
 
