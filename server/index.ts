@@ -81,10 +81,11 @@ const acl = (req: Request, res: Response, next: NextFunction) => {
   if (useAcl) {
     const jwt = passport.authenticate('local-jwt', (err, identity) => {
       const isLogged = identity && identity.id ;
-
-      if (isLogged) {
+      if (!isLogged) {
         const isAPICall = req.path.toLowerCase().includes('api')
         if (isAPICall) {
+      console.log('########$', isAPICall)
+
             return res.json({
               data : null,
               message: 'You are not authorized to open this page',
@@ -121,5 +122,7 @@ export const IGNORS = [
   '/styles.chunk.css.map',
   '/__nextjs',
   '/api/users/login',
-  '/api/users/registration'
+  '/api/users/registration',
+  '/api/properties',
+  // '/api/properties/by_token'
 ];

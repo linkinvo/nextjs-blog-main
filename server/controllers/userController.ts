@@ -1,9 +1,6 @@
-import { IIdentity } from '../../src/common';
-
-import BaseContext from '../baseContext';
-
 import { Request, Response, NextFunction } from 'express';
 import { route, GET, POST } from "awilix-express";
+import BaseContext from '../baseContext';
 
 @route("/api/users")
 export default class UserController extends BaseContext {
@@ -31,24 +28,6 @@ export default class UserController extends BaseContext {
   }
 
 
-//   @POST()
-//   @route('/login')
-//   public login(req: Request, res: Response, next: NextFunction) {
-
-//     const { passport } = this.di;
-
-//     // tslint:disable-next-line: no-shadowed-variable
-//     return passport.authenticate('local-login', (err, identity: IIdentity) => {
-//         console.log('login controller passport', identity);
-//         if (err) {
-//             return res.json(null, err);
-//         }
-//         res.cookie('token', identity.token, { maxAge: 1000606024 });
-//         return res.json(identity);
-//     })(req, res, next);
-// }
-
-
   @POST()
   @route('/login')
   public login(req: Request, res: Response, next: NextFunction) {
@@ -63,8 +42,8 @@ export default class UserController extends BaseContext {
         console.log('Validations denied : ', errors)
         res.json({
           identity: null,
-          message: 'Could not process validations',
-          errors:true
+          message: 'Could not process validations', 
+          errors:true 
         })
       }
     })(req, res, next);
@@ -94,29 +73,6 @@ export default class UserController extends BaseContext {
   //   })
   // }
 
-  @route('/')
-  @GET()
-  getAll(req: Request, res: Response) {
-    const { UserService } = this.di
-    const result = UserService.findAll()
-      .then(users => {
-        const props = {
-          data: users,
-          message: "users are found successfully",
-          error: false
-        }
-        res.send(props);
-      })
-      .catch(err => {
-        const props = {
-          data: null,
-          message: err,
-          error: true
-        }
-        res.status(500).send(props);
-      });
-    return result
-  }
 
   @route('/save/:id')
   @POST()
@@ -145,12 +101,68 @@ export default class UserController extends BaseContext {
   }
 
 
-  @route('/:id')
-  @GET()
-  getById(req: Request, res: Response) {
-    const { UserService } = this.di;
+ 
 
-    const result = UserService.findOneByID(req.params.id)
+  @route('/by_token') // Find a single UserModel with token
+    @GET()
+    getUserByToken(req: Request, res: Response) {
+      console.log(1)
+        const { UserService ,JwtStrategy } = this.di;
+        
+        const token = JwtStrategy.getJwtFromRequest(req);
+        console.log("TOKEN", token)
+        return UserService.getUserByToken(token)
+
+            .then(data => {
+                const answer = {
+                    data: data,
+                    message: "request successfull",
+                    error: false
+                }
+                res.send(answer);
+            })
+            .catch(err => {
+                const answer = {
+                    data: null,
+                    message: err,
+                    error: true
+                }
+                res.status(500).send(answer);
+            });
+    };
+
+    @route('/:id')
+    @GET()
+    getById(req: Request, res: Response) {
+      const { UserService } = this.di;
+      const result = UserService.findOneByID(req.params.id)
+        .then(users => {
+          const props = {
+            data: users,
+            message: "users are found successfully",
+            error: false
+          }
+          res.send(props);
+        })
+        .catch(err => {
+          const props = {
+            data: null,
+            message: err,
+            error: true
+          }
+          res.status(500).send(props);
+        });
+      console.log("result", result)
+  
+      return result
+    }
+
+
+  @route('/')
+  @GET()
+  getAll(req: Request, res: Response) {
+    const { UserService } = this.di
+    const result = UserService.findAll()
       .then(users => {
         const props = {
           data: users,
@@ -169,7 +181,6 @@ export default class UserController extends BaseContext {
       });
     return result
   }
-
 
   // @route('/delete/:id')
   // @DELETE()

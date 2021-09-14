@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { xSave } from 'src/request';
-import router, { useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 
 const login = () => {
     const router = useRouter()
+
     const loginUser = async event => {
         event.preventDefault()
 
@@ -13,18 +14,16 @@ const login = () => {
         })
 
         if (result.success === true) {
-            console.log(1111)
             if (result.response.errors === false) {
                 router.push({
                     pathname: '/',
                 })
-            console.log(222)
 
             }
             else alert(result.response.message)
         }
         else alert('Something wrong')
-        console.log(result)
+        console.log("result",result)
     }
 
     return (

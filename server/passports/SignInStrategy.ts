@@ -61,7 +61,7 @@ export default class SignInStrategy extends BaseContext {
         const token = jwt.sign(payload, config.jwtSecret);
         console.log('token == SignInStrategy : ', token);
         
-        user.token = token;
+        user.userToken = token;
         user.save();
 
         req.session.identity = payload;

@@ -7,7 +7,7 @@ import { IContextContainer } from '../container';
 
 
 interface IUser extends Model {
-    token?: string;
+  userToken?: string;
     id: number;
     firstName: string;
     lastName: string;
@@ -84,7 +84,11 @@ export default (ctx: IContextContainer) => {
       type: DataTypes.STRING,
       defaultValue: "CLIENT",
     },
-
+    userToken: {
+      type: DataTypes.STRING(300),
+      allowNull: true,
+      unique: true,
+    },
     createdAt: {
       allowNull: true,
       type: DataTypes.BIGINT,

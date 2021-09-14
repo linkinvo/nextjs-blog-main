@@ -26,7 +26,17 @@ export default class UserService extends BaseContext {
     }
 
 
-
+    public getUserByToken(token: string) {
+        const { UserModel } = this.di;
+        if (token.trim() === "") return Promise.reject('Wrong token');
+        return UserModel.findOne(
+            {
+                attributes: [
+                    'firstName', 'lastName'
+                ],
+                where: { userToken : token }
+            })
+    };
     
     // public deleteByID(id) {
     //     const { UserModel } = this.di;

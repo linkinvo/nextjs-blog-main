@@ -1,21 +1,24 @@
 import Link from 'next/link';
-import { SiteHeader } from './../components/SiteHeader';
 import SearchFilters from 'components/SearchFilters';
 import { xRead } from 'src/request';
+import SiteHeader from '../components/SiteHeader';
+import Layout from '../components/Layout'
+import { HTTP_METHOD } from 'src/common';
 
 
-export default function Home({getProperties}) {
-  getProperties=getProperties.response;
+
+export default function Home({getProperties, currentUser}) {
+  getProperties = getProperties.response;
+  console.log('7777777getProperties7777777', currentUser)
+  // const { data, error, message } = getProperties.response
   if (getProperties.error) return <div>{getProperties.message}</div>
 
 
+
   return (
+    <Layout props={currentUser}>
     <div className="min-h-screen bg-gray-200 antialiased xl:flex xl:flex-col xl:h-screen">
-      <div className='xl:flex-shrink-0'>
-        <SiteHeader />
-      </div>
       <div className='xl:flex-1 xl:flex '>
-        <SearchFilters />
         <main className='mt-6 xl:flex-1 xl:overflow-y-scroll'>
           <div className='px-4 xl:px-8'>
             <h3 className='text-gray-900 text-xl'>Los Angeles</h3>
@@ -27,33 +30,53 @@ export default function Home({getProperties}) {
               {
                 getProperties.data && getProperties.data.map((property) => 
                     <Card key={'card_' + property.id} property={property} />
+                    
                 )
+                
               }
             </div>
           </div>
         </main>
       </div>
     </div>
+    </Layout>
+
   );
 }
 
 
 // Home.getInitialProps = async (ctx) => {
-//   const res = await fetch("http://localhost:3000/api/properties/");
-//   const  getProperties = await res.json();
-  
+//   console.log("CTX", ctx.cookie)
+//   const cookie =  ctx.req ? ctx.req.headers.cookie || "" : document.cookie;
+//   const token =  cookie.token;
+//   const getProperties = await xRead("/properties/", {}, token);
+//   const currentUser = await xRead("/by_token/", {}, token);
+
 //   return {
-//       getProperties,
+//     getProperties,
+//     currentUser
 //   }
 // }
 
-
 Home.getInitialProps = async (ctx) => {
-  const cookie =  ctx.req ? ctx.req.headers.cookie || "" : document.cookie;
-  const token =  cookie.token;
-  const getProperties = await xRead("/properties/", {}, token);
+
+  //   const cookie =  ctx.req ? ctx.req.headers.cookie || "" : document.cookie;
+  // const token =  cookie.token;
+
+  const isServer = typeof window === 'undefined';
+  const cookie = isServer ? ctx.req.headers.cookie : document.cookie;
+
+  const getCookie = (name) => {
+    var match = cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    if (match) return match[2];
+  }
+
+  const token = getCookie('token');
+  const getProperties = await xRead("/properties/", {}, HTTP_METHOD.GET, token);
+  const currentUser = await xRead("/users/by_token", {}, HTTP_METHOD.GET, token);
   return {
-    getProperties
+    getProperties,
+    currentUser
   }
 }
 

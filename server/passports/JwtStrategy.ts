@@ -32,7 +32,6 @@ export default class JwtStrategy extends BaseContext {
         console.log('jwt: verifyRequest', jwtPayload);
         UserService.findOneByID(jwtPayload.id)
             .then(user => {
-                console.log('verify request user', user);
                 return done(null, {
                     id: user.id,
                     firstName: user.firstName,
