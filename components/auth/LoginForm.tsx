@@ -91,7 +91,8 @@ export default class LoginForm extends React.Component< MyState> {
                     Welcome ! let's login 
                 </h3>
                 <br/>
-    <form onSubmit={this.handleSubmit}  >
+                {/* onSubmit={this.handleSubmit}  */}
+    <form action="/api/users/login" method="post"  >  
         <div className="mb-1 sm:mb-2">
             <label
                 htmlFor="email"

@@ -40,24 +40,25 @@ function xFetch(endpoint: string,  method: HTTP_METHOD, data = {}, token?: strin
         );
 }
 
-const identity = new Identity();
+// const identity = new Identity();
 
-
-function actionRequest(endpoint: string,  method: HTTP_METHOD, data = {},) {
+ function actionRequest(endpoint: string,  method: HTTP_METHOD, data = {}, token?: string) {
     
-    const token = identity?.token;  // ??? cookies!
+    const UserToken = token
+
+    // const token = identity?.token;  // ??? cookies!
 
     // document.cookie
 
-    return xFetch(endpoint, method, data, token);
+    return xFetch(endpoint, method, data, UserToken);
 }
 
-export const xSave = (point: string, data: any = {}) => {
-    return actionRequest(point, HTTP_METHOD.POST, data);
+export const xSave = (point: string, data: any = {}, token?: string) => {
+    return actionRequest(point, HTTP_METHOD.POST, data, token);
 }
 
-export const xRead = (point: string, data: any = {}, method: HTTP_METHOD = HTTP_METHOD.GET) => {
-    return actionRequest(point, method, data);
+export const xRead = (point: string, data: any = {}, method: HTTP_METHOD = HTTP_METHOD.GET, token?: string) => {
+    return actionRequest(point, method, data, token);
 }
 
 export const xDelete = (point: string, data: any = {}) => {

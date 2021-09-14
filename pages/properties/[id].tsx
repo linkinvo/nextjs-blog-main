@@ -1,16 +1,18 @@
 import PropertiesModalComponents from 'components/PropertiesModalComponents';
 import { SiteHeader } from 'components/SiteHeader'
 import query, { useRouter } from 'next/router';
+import { xRead } from 'src/request';
+import cookie from 'cookie-cutter';
 
 interface CardProperties {
   property: any;
   getProperties: any;
 }
 
-export default function Property(props: CardProperties, {getProperties}) {
+export default function Property(props: CardProperties, {getProperties}) { 
   const { query } = useRouter()
 
-  const property = props.getProperties;
+  const property = props.getProperties.response;
   const { baths, beds, img, description, price , reviews} = property.data;
   if (property.error) return <div>{property.message}</div>
   return (
@@ -130,11 +132,20 @@ export default function Property(props: CardProperties, {getProperties}) {
   );
 }
 
-Property.getInitialProps = async (ctx) => {
-  const res = await fetch(`http://localhost:3000/api/properties/${ctx.query.id}`);
-  const getProperties = await res.json();
+// Property.getInitialProps = async (ctx) => {
+//   const res = await fetch(`http://localhost:3000/api/properties/${ctx.query.id}`);
+//   const getProperties = await res.json();
 
+//   return {
+//     getProperties,
+//   }
+// }
+
+Property.getInitialProps = async (ctx) => {
+  const cookie = ctx.req ? ctx.req.headers.cookie || "" : document.cookie;
+  const token = cookie.token;
+  const getProperties = await xRead(`/properties/${ctx.query.id}`, {}, token);
   return {
-    getProperties,
+    getProperties
   }
 }

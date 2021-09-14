@@ -1,8 +1,15 @@
 import Link from 'next/link';
 import { SiteHeader } from './../components/SiteHeader';
 import SearchFilters from 'components/SearchFilters';
+import { xRead } from 'src/request';
+// import cookie from 'cookie-cutter';
+
+import cookie from "cookie";
 
 export default function Home({getProperties}) {
+  
+  getProperties=getProperties.response;
+  
   if (getProperties.error) return <div>{getProperties.message}</div>
   return (
     <div className="min-h-screen bg-gray-200 antialiased xl:flex xl:flex-col xl:h-screen">
@@ -33,14 +40,25 @@ export default function Home({getProperties}) {
 }
 
 
-Home.getInitialProps = async (ctx) => {
-  const res = await fetch("http://localhost:3000/api/properties/");
-  const  getProperties = await res.json();
+// Home.getInitialProps = async (ctx) => {
+//   const res = await fetch("http://localhost:3000/api/properties/");
+//   const  getProperties = await res.json();
   
+//   return {
+//       getProperties,
+//   }
+// }
+
+
+Home.getInitialProps = async (ctx) => {
+  const cookie =  ctx.req ? ctx.req.headers.cookie || "" : document.cookie;
+  const token =  cookie.token;
+  const getProperties = await xRead("/properties/", {}, token);
   return {
-      getProperties,
+    getProperties
   }
 }
+
 
 
 interface CardProps {

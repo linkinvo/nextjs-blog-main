@@ -79,7 +79,6 @@ const acl = (req: Request, res: Response, next: NextFunction) => {
   }
 
   if (useAcl) {
-    console.log('ACL!!');
     const jwt = passport.authenticate('local-jwt', (err, identity) => {
       const isLogged = identity && identity.id ;
 
@@ -94,6 +93,7 @@ const acl = (req: Request, res: Response, next: NextFunction) => {
         }
          else {
             // return res.redirect('/');
+            
             return handle(req, res);
         }
       }
