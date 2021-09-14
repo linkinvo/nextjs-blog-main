@@ -53,17 +53,18 @@ export default class UserController extends BaseContext {
   @route('/login')
   public login(req: Request, res: Response, next: NextFunction) {
     const { passport } = this.di;
-
+    console.log('BODY',req.body)
     return passport.authenticate('local-login', (errors, identity) => {
       console.log('login controller passport ', identity);
       if (identity) {
         res.cookie('token', identity.token, { maxAge: 1000606024},  {message: 'You have successfully logged in!'})
-        return res.json(identity);
+        return res.json({identity,  errors:false});
       } else {
         console.log('Validations denied : ', errors)
         res.json({
           identity: null,
-          message: 'Could not process validations'
+          message: 'Could not process validations',
+          errors:true
         })
       }
     })(req, res, next);

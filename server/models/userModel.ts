@@ -9,8 +9,8 @@ import { IContextContainer } from '../container';
 interface IUser extends Model {
     token?: string;
     id: number;
-    first_name: string;
-    last_name: string;
+    firstName: string;
+    lastName: string;
     email: string;
     password: string;
     phone: string;

@@ -92,8 +92,7 @@ const acl = (req: Request, res: Response, next: NextFunction) => {
             })
         }
          else {
-            // return res.redirect('/');
-            
+            // return res.redirect('/');            
             return handle(req, res);
         }
       }

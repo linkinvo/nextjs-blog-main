@@ -1,7 +1,8 @@
 export interface IIdentity {
+    id: any;
     token?: string;
-    first_name: string;
-    last_name: string;
+    firstName: string;
+    lastName: string;
     email: string;
     role: string;
 }
@@ -11,4 +12,9 @@ export enum HTTP_METHOD {
     POST = 'POST',
     GET = 'GET',
     DELETE = 'DELETE',
+}
+
+export enum ROLE {
+    ADMIN = 'ADMIN',
+    CLIENT = 'CLIENT'
 }

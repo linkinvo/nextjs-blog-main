@@ -14,7 +14,6 @@ export default class SignUpStrategy extends BaseContext {
     constructor(opts: IContextContainer) {
         super(opts)
 
-        console.log('jwt: initialization local-signup strategy');
         this.verifyRequestUser = this.verifyRequestUser.bind(this);
 
 

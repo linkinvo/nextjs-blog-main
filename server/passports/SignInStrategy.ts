@@ -1,3 +1,4 @@
+import { IIdentity } from './../../src/common';
 import BaseContext from "../baseContext";
 import passportLocal from 'passport-local';
 import bcrypt from 'bcrypt';
@@ -49,11 +50,13 @@ export default class SignInStrategy extends BaseContext {
             return done('Incorrect password');
         }
 
-        const payload = {
+        const payload: IIdentity = {
             id: user.id,
-            
+            firstName: user.firstName,
+            lastName: user.lastName,
+            role: user.role,
+            email: user.email
         };
-
 
         const token = jwt.sign(payload, config.jwtSecret);
         console.log('token == SignInStrategy : ', token);
@@ -61,6 +64,7 @@ export default class SignInStrategy extends BaseContext {
         user.token = token;
         user.save();
 
+        req.session.identity = payload;
         
         
         return done(null, {payload, token});

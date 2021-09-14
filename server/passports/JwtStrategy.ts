@@ -20,7 +20,6 @@ export default class JwtStrategy extends BaseContext {
 
         this.verifyRequest = this.verifyRequest.bind(this);
         this.getJwtFromRequest = this.getJwtFromRequest.bind(this);
-        console.log('before');
 
         this._strategy = new Strategy({
             jwtFromRequest: this.getJwtFromRequest,
@@ -36,8 +35,8 @@ export default class JwtStrategy extends BaseContext {
                 console.log('verify request user', user);
                 return done(null, {
                     id: user.id,
-                    firstName: user.first_name,
-                    lastName: user.last_name,
+                    firstName: user.firstName,
+                    lastName: user.lastName,
                     role: user.role,
                     email: user.email,
                     // token: user.token
