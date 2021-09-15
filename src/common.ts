@@ -18,3 +18,23 @@ export enum ROLE {
     ADMIN = 'ADMIN',
     CLIENT = 'CLIENT'
 }
+
+export interface SagaAction {
+    saga: () => void;
+    trigger: (data: any) => void;
+}
+export interface ISagaAction {
+    [entity: string]: {
+        [action: string]: {
+            saga?: () => void;
+            trigger: (data: any) => void;  //Dispatching actions
+        },
+    };
+}
+
+export enum ENTITIES {
+    USERS = 'users',
+}
+
+
+export const isEmpty = (obj) => Object.keys(obj).length === 0 && obj.constructor === Object
