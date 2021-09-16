@@ -28,6 +28,7 @@ export default (ctx: IContextContainer) => {
     rating: { type: DataTypes.INTEGER, defaultValue: 0 },
     price: { type: DataTypes.INTEGER, allowNull: false },
     beds: { type: DataTypes.INTEGER, allowNull: false },
+    baths: { type: DataTypes.INTEGER, allowNull: false },
     createdAt: { type: DataTypes.BIGINT, allowNull: false },
     updatedAt: { type: DataTypes.BIGINT, allowNull: false },
     userId: { type: DataTypes.INTEGER },

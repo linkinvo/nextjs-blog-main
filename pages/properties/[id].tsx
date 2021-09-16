@@ -1,24 +1,37 @@
 import PropertiesModalComponents from 'components/PropertiesModalComponents';
-import { SiteHeader } from 'components/SiteHeader'
+import  SiteHeader  from 'components/SiteHeader'
 import query, { useRouter } from 'next/router';
 import { xRead } from 'src/request';
 import cookie from 'cookie-cutter';
+import { useDispatch, useSelector } from 'react-redux';
+import { getSinglePropertyInfo } from 'redux/store/actions';
 
 interface CardProperties {
   property: any;
   getProperties: any;
 }
 
-export default function Property(props: CardProperties, {getProperties}) { 
+export default function Property({id}) { 
   const { query } = useRouter()
 
-  const property = props.getProperties.response;
-  const { baths, beds, img, description, price , reviews} = property.data;
-  if (property.error) return <div>{property.message}</div>
+  // const property = props.getProperties.response;
+  // const { baths, beds, img, description, price , reviews} = property.data;
+  // if (property.error) return <div>{property.message}</div>
+
+
+  const dispatch = useDispatch();
+  const property = useSelector((state: any) => state.propertiesReducer.property);
+  const userReducer = useSelector((state: any) => state.userReducer);
+  console.log("ID", id)
+  if (property === '') { dispatch(getSinglePropertyInfo(id)); return (<div>loading...</div>) }
+  const { baths, beds, img, description, price , reviews} = property;
+
+
+
   return (
     <div className="min-h-screen bg-gray-200 antialiased xl:flex xl:flex-col xl:h-screen">
       <div className='xl:flex-shrink-0'>
-        <SiteHeader />
+        <SiteHeader props={userReducer} />
       </div>
       <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
       <div className="flex flex-col max-w-screen-lg overflow-hidden bg-white border rounded shadow-sm lg:flex-row sm:mx-auto">
@@ -79,7 +92,7 @@ export default function Property(props: CardProperties, {getProperties}) {
     <div className="grid gap-8 lg:grid-cols-3 sm:max-w-sm sm:mx-auto lg:max-w-full">
     {
                 reviews.map((reviews) => {
-                  return  <div className="p-8 bg-white border rounded shadow-sm">
+                  return  <div className="p-8 bg-white border rounded shadow-sm" key={reviews.id}>
                   <p className="mb-3 text-xs font-semibold tracking-wide uppercase">
                       <a
                           href="/"
@@ -142,10 +155,11 @@ export default function Property(props: CardProperties, {getProperties}) {
 // }
 
 Property.getInitialProps = async (ctx) => {
-  const cookie = ctx.req ? ctx.req.headers.cookie || "" : document.cookie;
-  const token = cookie.token;
-  const getProperties = await xRead(`/properties/${ctx.query.id}`, {}, token);
+  // const cookie = ctx.req ? ctx.req.headers.cookie || "" : document.cookie;
+  // const token = cookie.token;
+  // const getProperties = await xRead(`/properties/${ctx.query.id}`, {}, token);
   return {
-    getProperties
+    // getProperties
+    id: ctx.query.id
   }
 }

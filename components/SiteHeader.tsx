@@ -3,14 +3,10 @@ import Link from 'next/link'
 
 
 export default function Header({ props }) {
-  console.log("PROPS!!!", props);
-
-  let firstName = '';
-  let lastName = '';
-  if (props.success === true && props.response.error === false) {
-    firstName = props.response.data.firstName;
-    lastName = props.response.data.lastName;
-  }
+  const NOT_AUTHORIZED = props.id === '';
+  let firstName = props.firstName;
+  let lastName = props.lastName;
+  
   const [isOpenSandwich, setIsOpenSandwich] = useState(false);
   const [isOpenProfile, setIsOpenProfile] = useState(false);
   return (
@@ -33,8 +29,7 @@ export default function Header({ props }) {
             >
               {
                 isOpenSandwich ?
-
-<path d="M12.778 11.364a1 1 0 01-1.414 1.414L6.536 7.95l-4.829 4.828a1 1 0 01-1.414-1.414L5.12 6.536.293 1.707A1 1 0 011.707.293L6.536 5.12 11.364.293a1 1 0 111.414 1.414L7.95 6.536l4.828 4.828z" />
+                  <path d="M12.778 11.364a1 1 0 01-1.414 1.414L6.536 7.95l-4.829 4.828a1 1 0 01-1.414-1.414L5.12 6.536.293 1.707A1 1 0 011.707.293L6.536 5.12 11.364.293a1 1 0 111.414 1.414L7.95 6.536l4.828 4.828z" />
                   :
                   <path d="M0 1a1 1 0 011-1h16a1 1 0 110 2H1a1 1 0 01-1-1zm0 6a1 1 0 011-1h16a1 1 0 110 2H1a1 1 0 01-1-1zm1 5a1 1 0 100 2h16a1 1 0 100-2H1z" />
               }
@@ -63,15 +58,31 @@ export default function Header({ props }) {
 
         <div className="sm:flex sm:items-center">
           <div className="px-2 pt-2 pb-5 border-b border-gray-800 sm:flex sm:border-b-0 sm:py-0">
-            <a href="" className="block px-3 py-1 hover:bg-gray-700 rounded font-medium text-white sm:text-sm sm:px-2 xl:text-gray-900  xl:hover:bg-gray-200 ">List your property</a>
-            <a href="" className="block px-3 py-1 mt-1 hover:bg-gray-700 rounded font-medium text-white sm:mt-0 sm:text-sm sm:px-2 sm:ml-2 xl:text-gray-900 xl:hover:bg-gray-200 ">Trip</a>
-            <Link href={"/"} >
-              <a className="block px-3 py-1 mt-1 hover:bg-gray-700 rounded font-medium text-white sm:mt-0 sm:text-sm sm:px-2 sm:ml-2 xl:text-gray-900 xl:hover:bg-gray-200 ">Login</a>
-            </Link>
+            {
+              NOT_AUTHORIZED ?
+                <>
+                  <Link href={"/login"} >
+                    <a className="block px-3 py-1 mt-1 hover:bg-gray-700 rounded font-medium text-white sm:mt-0 sm:text-sm sm:px-2 sm:ml-2 xl:text-gray-900 xl:hover:bg-gray-200 ">Login</a>
+                  </Link>
+                  <Link href={"/register"} >
+                    <a className="block px-3 py-1 mt-1 hover:bg-gray-700 rounded font-medium text-white sm:mt-0 sm:text-sm sm:px-2 sm:ml-2 xl:text-gray-900 xl:hover:bg-gray-200 ">Register</a>
+                  </Link>
+                </>
+                :
+                <>
+                  <Link href={"/logout"} >
+                    <a className="block px-3 py-1 mt-1 hover:bg-gray-700 rounded font-medium text-white sm:mt-0 sm:text-sm sm:px-2 sm:ml-2 xl:text-gray-900 xl:hover:bg-gray-200 ">Logout</a>
+                  </Link>
+                  <span className="block px-3 py-1 mt-1 hover:bg-gray-700 rounded font-medium text-white sm:mt-0 sm:text-sm sm:px-2 sm:ml-2 xl:text-gray-900 xl:hover:bg-gray-200 ">{firstName} {lastName}</span>
+
+                </>
+
+            }
+
           </div>
           <div className="relative px-5 py-5 sm:py-0">
             <div onClick={() => { setIsOpenProfile(!isOpenProfile) }} className="flex items-center">
-              <img className="h-10 w-10 object-cover rounded-full border-2 border-gray-600 cursor-pointer sm:w-8 sm:h-8 xl:border-gray-200 " src='https://media.istockphoto.com/vectors/user-sign-icon-person-symbol-human-avatar-vector-id639085642?k=20&m=639085642&s=170667a&w=0&h=Oz2wAbb8r_b8sU8k4yZ3RR4NRbe-s7GF0kxjs1aez9M=' alt="" />
+              <img className="h-10 w-10 object-cover rounded-full border-2 border-gray-600 cursor-pointer sm:w-8 sm:h-8 xl:border-gray-200 " src='https://img.freepik.com/free-icon/important-person_318-10744.jpg?size=338&ext=jpg' alt="jjkj" />
               <span className="ml-4 font-medium text-gray-200 sm:hidden">{firstName} {lastName}</span>
             </div>
             <div className={`${!isOpenProfile ? 'sm:hidden' : 'block'} mt-5 sm:bg-white sm:rounded-lg sm:fixed sm:mt-4 sm:right-0 sm:w-48 sm:py-2 sm:shadow-xl sm:mx-3 sm:z-50`}>

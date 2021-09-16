@@ -15,13 +15,15 @@ export default class UserController extends BaseContext {
       if (identity) {
         res.json({
           identity,
-          message: 'Registration completed successfully!!! You can now log in.'
+          message: 'Registration completed successfully!!! You can now log in.',
+          error: false
         })
       } else {
         console.log('Register catch : ', errors)
         res.status(301).json({
           identity: null,
-          message: 'Could not process register'
+          message: 'Could not process register',
+          error: errors
         })
       }
     })(req, res, next);
@@ -37,13 +39,13 @@ export default class UserController extends BaseContext {
       console.log('login controller passport ', identity);
       if (identity) {
         res.cookie('token', identity.token, { maxAge: 1000606024},  {message: 'You have successfully logged in!'})
-        return res.json({identity,  errors:false});
+        return res.json({identity,  error: false});
       } else {
         console.log('Validations denied : ', errors)
         res.json({
           identity: null,
           message: 'Could not process validations', 
-          errors:true 
+          error: true ,
         })
       }
     })(req, res, next);

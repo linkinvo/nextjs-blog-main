@@ -4,19 +4,19 @@ import React from "react";
 import { connect } from "react-redux";
 import { useRouter } from 'next/router'
 import { useDispatch, useSelector } from "react-redux";
-import { btnClick, increment } from "redux/store/actions";
+import { btnLoginClick } from "redux/store/actions";
 
 
 
 const login = () => {
-    const count = useSelector((state: any) => state.countReducer.count)
+    // const count = useSelector((state: any) => state.countReducer.count)
     const dispatch = useDispatch()
 
     const router = useRouter()
 
     const loginUser = async event => {
         event.preventDefault();
-        dispatch(btnClick({
+        dispatch(btnLoginClick({
             email: event.target.email.value,
             password: event.target.password.value,
         }));

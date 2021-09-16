@@ -5,13 +5,12 @@ import { wrapper } from '../redux/store/store'
 import { loadData } from '../redux/store/actions'
 import Home from './home'
 
-
 const Index = () => {
   const dispatch = useDispatch()
 
   return (
-    <>
-      {/* <Home  /> */}
+    <> 
+      <Home />
     </>
 
   );
@@ -19,14 +18,14 @@ const Index = () => {
 }
 
 // @ts-ignore
-export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
+// export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
 
-  if (!store.getState().placeholderData) {
-    store.dispatch(loadData())
-    store.dispatch(END)
-  }
+//   if (!store.getState().placeholderData) {
+//     store.dispatch(loadData())
+//     store.dispatch(END)
+//   }
 
-  await store.sagaTask.toPromise()
-})
+//   await store.sagaTask.toPromise()
+// })
 
 export default Index;

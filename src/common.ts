@@ -5,6 +5,7 @@ export interface IIdentity {
     lastName: string;
     email: string;
     role: string;
+    phone: string
 }
 
 export enum HTTP_METHOD {

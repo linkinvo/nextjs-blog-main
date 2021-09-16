@@ -4,18 +4,24 @@ import { xRead } from 'src/request';
 import SiteHeader from '../components/SiteHeader';
 import Layout from '../components/Layout'
 import { HTTP_METHOD } from 'src/common';
+import { useDispatch, useSelector } from 'react-redux';
+import { getPropertiesInfo } from 'redux/store/actions';
 
 
 
-export default function Home({getProperties, currentUser}) {
-  getProperties = getProperties.response;
-  // const { data, error, message } = getProperties.response
-  if (getProperties.error) return <div>{getProperties.message}</div>
+export default function Home() {
+
+  const dispatch = useDispatch();
+  const properties = useSelector((state: any) => state.propertiesReducer.properties);
+  const userReducer = useSelector((state: any) => state.userReducer);
+  console.log("PROPERTY",properties )
+  if (properties.length === 0) { dispatch(getPropertiesInfo()); return (<div>loading...</div>) }
+//   if (getProperties.error) return <div>{getProperties.message}</div>
 
 
 
   return (
-    <Layout props={currentUser}>
+    <Layout props={userReducer}>
     <div className="min-h-screen bg-gray-200 antialiased xl:flex xl:flex-col xl:h-screen">
       <div className='xl:flex-1 xl:flex '>
         <main className='mt-6 xl:flex-1 xl:overflow-y-scroll'>
@@ -27,7 +33,7 @@ export default function Home({getProperties, currentUser}) {
             <div className='flex flex-wrap px-4 sm:inline-flex sm:pt-2 sm:pb-8 xl:px-8 gap-5'>
 
               {
-                getProperties.data && getProperties.data.map((property) => 
+               properties && properties.map((property) => 
                     <Card key={'card_' + property.id} property={property} />
                     
                 )
@@ -46,27 +52,27 @@ export default function Home({getProperties, currentUser}) {
 
 
 
-Home.getInitialProps = async (ctx) => {
+// Home.getInitialProps = async (ctx) => {
 
-  //   const cookie =  ctx.req ? ctx.req.headers.cookie || "" : document.cookie;
-  // const token =  cookie.token;
+//   //   const cookie =  ctx.req ? ctx.req.headers.cookie || "" : document.cookie;
+//   // const token =  cookie.token;
 
-  const isServer = typeof window === 'undefined';
-  const cookie = isServer ? ctx.req.headers.cookie : document.cookie;
+//   const isServer = typeof window === 'undefined';
+//   const cookie = isServer ? ctx.req.headers.cookie : document.cookie;
 
-  const getCookie = (name) => {
-    var match = cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-    if (match) return match[2];
-  }
+//   const getCookie = (name) => {
+//     var match = cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+//     if (match) return match[2];
+//   }
 
-  const token = getCookie('token');
-  const getProperties = await xRead("/properties/", {}, HTTP_METHOD.GET, token);
-  const currentUser = await xRead("/users/by_token", {}, HTTP_METHOD.GET, token);
-  return {
-    getProperties,
-    currentUser
-  }
-}
+//   const token = getCookie('token');
+//   const getProperties = await xRead("/properties/", {}, HTTP_METHOD.GET, token);
+//   const currentUser = await xRead("/users/by_token", {}, HTTP_METHOD.GET, token);
+//   return {
+//     getProperties,
+//     currentUser
+//   }
+// }
 
 
 

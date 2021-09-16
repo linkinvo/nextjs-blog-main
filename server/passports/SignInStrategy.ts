@@ -30,9 +30,11 @@ export default class SignInStrategy extends BaseContext {
     public async verifyRequestUser(req: Request, email: string, password: string, done: any) {
 
         const { UserModel } = this.di;
+
         let user = await UserModel.findOne({
             where: { email }
         });
+
 
         if (!user) {
 
@@ -55,7 +57,8 @@ export default class SignInStrategy extends BaseContext {
             firstName: user.firstName,
             lastName: user.lastName,
             role: user.role,
-            email: user.email
+            email: user.email,
+            phone: user.phone
         };
 
         const token = jwt.sign(payload, config.jwtSecret);
@@ -63,7 +66,6 @@ export default class SignInStrategy extends BaseContext {
         
         user.userToken = token;
         user.save();
-
         req.session.identity = payload;
         
         
