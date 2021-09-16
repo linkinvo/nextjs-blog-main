@@ -1,6 +1,5 @@
 
 import { ENTITIES } from '../../src/common';
-import Entity from "./Entity";
 
 export interface User {
     userToken?: string;
@@ -13,11 +12,11 @@ export interface User {
     role: string;
 }
 
-export class UserEntity extends Entity {
-    constructor() {
-        super(ENTITIES.USERS, {});
-    }
-}
+// export class UserEntity extends Entity {
+//     constructor() {
+//         super(ENTITIES.USERS, {});
+//     }
+// }
 
-const userEntity = new UserEntity();
-export default userEntity;
+// const userEntity = new UserEntity();
+// export default userEntity;

@@ -1,18 +1,15 @@
-import { isEmpty } from '../src/common';
 import 'tailwindcss/tailwind.css'
 import "../styles/global.css";
 import React from 'react'
 import { AppProps } from 'next/app';
-import wrapper, { SagaStore } from '../redux/store';
-import { END } from 'redux-saga';
-import { setIdentity, setSSRData } from 'redux/action';
+import {wrapper}  from '../redux/store/store';
 
- function App({ Component, pageProps }: AppProps) {
+ function App({ Component, pageProps }) {
   return <Component {...pageProps} />;
 }
 
 
-App.getInitialProps = wrapper.getInitialAppProps(store => async ({ Component, ctx }) => {
+// App.getInitialProps = wrapper.getInitialAppProps(store => async ({ Component, ctx }) => {
 
   // if (ctx.req && ctx.req['ssrData'] !== undefined && !isEmpty(ctx.req['ssrData'])) {
   //     store.dispatch(setSSRData({ data: ctx.req['ssrData']}));
@@ -27,10 +24,10 @@ App.getInitialProps = wrapper.getInitialAppProps(store => async ({ Component, ct
   
 
   // 1. Wait for all page actions to dispatch
-  const pageProps = {
-      ...(Component.getInitialProps ? await Component.getInitialProps(ctx) : {}),
-      namespacesRequired: ['common']
-  };
+  // const pageProps = {
+  //     ...(Component.getInitialProps ? await Component.getInitialProps(ctx) : {}),
+  //     namespacesRequired: ['common']
+  // };
 
   // 2. Stop the saga if on server
   // if (store && ctx.req) {
@@ -38,11 +35,11 @@ App.getInitialProps = wrapper.getInitialAppProps(store => async ({ Component, ct
   //     await (store as SagaStore).sagaTask.toPromise();
   // }
 
-  // 3. Return props
-  return {
-      pageProps
-  };
-});
+//   // 3. Return props
+//   return {
+//       pageProps
+//   };
+// });
 
 // export default App;
 export default wrapper.withRedux(App);
