@@ -8,6 +8,20 @@ export interface IIdentity {
     phone: string
 }
 
+export interface IProperty {
+    id?: number;
+    description?: string;
+    beds?: string;
+    baths?: string;
+    userId?: number;
+    price?: number;
+    rating?: number;
+    img?: string;
+    createdAt?: number;
+    updatedAt?: number;
+}
+
+
 export enum HTTP_METHOD {
     PUT = 'PUT',
     POST = 'POST',
@@ -20,22 +34,22 @@ export enum ROLE {
     CLIENT = 'CLIENT'
 }
 
-export interface SagaAction {
-    saga: () => void;
-    trigger: (data: any) => void;
-}
-export interface ISagaAction {
-    [entity: string]: {
-        [action: string]: {
-            saga?: () => void;
-            trigger: (data: any) => void;  //Dispatching actions
-        },
-    };
-}
-
 export enum ENTITIES {
     USERS = 'users',
 }
 
+
+// export interface SagaAction {
+//     saga: () => void;
+//     trigger: (data: any) => void;
+// }
+// export interface ISagaAction {
+//     [entity: string]: {
+//         [action: string]: {
+//             saga?: () => void;
+//             trigger: (data: any) => void;  //Dispatching actions
+//         },
+//     };
+// }
 
 export const isEmpty = (obj) => Object.keys(obj).length === 0 && obj.constructor === Object

@@ -12,6 +12,7 @@ export default function Header({ props }) {
   return (
     <header className="bg-gray-900 sm:flex sm:items-center sm:justify-between xl:bg-white">
       <div className="flex justify-between py-4 px-3 xl:w-72 xl:bg-gray-900 xl:justify-center xl:py-5">
+      <Link href={"/"} >
         <div>
           <svg className="h-8 w-auto" width="185" height="32" xmlns="http://www.w3.org/2000/svg"
           >
@@ -23,6 +24,7 @@ export default function Header({ props }) {
             />
           </svg>
         </div>
+        </Link>
         <div className="flex sm:hidden">
           <button type="button" className="px-2" onClick={() => { setIsOpenSandwich(!isOpenSandwich) }}>
             <svg className="h-5 w-5 fill-current text-gray-500 hover:text-white focus:outline-none focus:text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 14"
@@ -70,10 +72,14 @@ export default function Header({ props }) {
                 </>
                 :
                 <>
-                  <Link href={"/logout"} >
+                  {/* <Link href={"/logout"} >
                     <a className="block px-3 py-1 mt-1 hover:bg-gray-700 rounded font-medium text-white sm:mt-0 sm:text-sm sm:px-2 sm:ml-2 xl:text-gray-900 xl:hover:bg-gray-200 ">Logout</a>
-                  </Link>
+                  </Link> */}
                   <span className="block px-3 py-1 mt-1 hover:bg-gray-700 rounded font-medium text-white sm:mt-0 sm:text-sm sm:px-2 sm:ml-2 xl:text-gray-900 xl:hover:bg-gray-200 ">{firstName} {lastName}</span>
+                  <div onClick={() => { setIsOpenProfile(!isOpenProfile) }} className="flex items-center">
+              <img className="h-10 w-10 object-cover rounded-full border-2 border-gray-600 cursor-pointer sm:w-8 sm:h-8 xl:border-gray-200 " src='https://img.freepik.com/free-icon/important-person_318-10744.jpg?size=338&ext=jpg' alt="person_icon" />
+              <span className="ml-4 font-medium text-gray-200 sm:hidden">{firstName} {lastName}</span>
+            </div>
 
                 </>
 
@@ -81,16 +87,18 @@ export default function Header({ props }) {
 
           </div>
           <div className="relative px-5 py-5 sm:py-0">
-            <div onClick={() => { setIsOpenProfile(!isOpenProfile) }} className="flex items-center">
-              <img className="h-10 w-10 object-cover rounded-full border-2 border-gray-600 cursor-pointer sm:w-8 sm:h-8 xl:border-gray-200 " src='https://img.freepik.com/free-icon/important-person_318-10744.jpg?size=338&ext=jpg' alt="jjkj" />
+            {/* <div onClick={() => { setIsOpenProfile(!isOpenProfile) }} className="flex items-center">
+              <img className="h-10 w-10 object-cover rounded-full border-2 border-gray-600 cursor-pointer sm:w-8 sm:h-8 xl:border-gray-200 " src='https://img.freepik.com/free-icon/important-person_318-10744.jpg?size=338&ext=jpg' alt="person_icon" />
               <span className="ml-4 font-medium text-gray-200 sm:hidden">{firstName} {lastName}</span>
-            </div>
+            </div> */}
             <div className={`${!isOpenProfile ? 'sm:hidden' : 'block'} mt-5 sm:bg-white sm:rounded-lg sm:fixed sm:mt-4 sm:right-0 sm:w-48 sm:py-2 sm:shadow-xl sm:mx-3 sm:z-50`}>
               <a href="/" className="block text-gray-400 hover:text-white sm:text-gray-800 sm:px-4 sm:mt-0 sm:py-2 sm:hover:bg-indigo-500">Account settings</a>
               {/* <Link href={"/"} >
                 <a className="mt-3 block text-gray-400 hover:text-white sm:text-gray-800 sm:px-4 sm:mt-0 sm:py-2 sm:hover:bg-indigo-500">Login</a>
               </Link> */}
+              <Link href={"/logout"} >
               <a href="" className="mt-3 block text-gray-400 hover:text-white sm:text-gray-800 sm:px-4 sm:mt-0 sm:py-2 sm:hover:bg-indigo-500">Sign Out</a>
+              </Link>
             </div>
             <button type="button" onClick={() => { setIsOpenProfile(!isOpenProfile) }} className={`${!isOpenProfile ? 'sm:hidden' : 'sm:block'} sm:fixed sm:opacity-1 sm:inset-0 sm:w-full sm:h-full sm:z-40`}></button>
 

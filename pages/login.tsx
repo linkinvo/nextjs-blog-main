@@ -19,7 +19,21 @@ const login = () => {
         dispatch(btnLoginClick({
             email: event.target.email.value,
             password: event.target.password.value,
-        }));
+        }))
+
+         if (event.success === true) {
+            if (event.response.errors === false) {
+                router.push({
+                    pathname: '/',
+                })
+            }
+            else alert(event.response.message)
+        }
+        else alert('Something wrong')
+        console.log(event)
+        
+
+
         // const result = await xSave('/user/login', {
         //     userEmail: event.target.userEmail.value,
         //     userPasswd: event.target.userPasswd.value,

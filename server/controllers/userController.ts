@@ -34,7 +34,6 @@ export default class UserController extends BaseContext {
   @route('/login')
   public login(req: Request, res: Response, next: NextFunction) {
     const { passport } = this.di;
-    console.log('BODY',req.body)
     return passport.authenticate('local-login', (errors, identity) => {
       console.log('login controller passport ', identity);
       if (identity) {
@@ -112,7 +111,6 @@ export default class UserController extends BaseContext {
         const { UserService ,JwtStrategy } = this.di;
         
         const token = JwtStrategy.getJwtFromRequest(req);
-        console.log("TOKEN", token)
         return UserService.getUserByToken(token)
 
             .then(data => {
@@ -200,19 +198,3 @@ export default class UserController extends BaseContext {
   // }
 
 }
-//   .then(users => {
-//     const props = {
-//         data: users,
-//         message: "users are found successfully",
-//         error: false
-//     }
-//     res.send(props);
-// })
-// .catch(err => {
-    // const props = {
-    //     data: null,
-    //     message: err,
-    //     error: true
-    // }
-//     res.status(500).send(props);
-// })
