@@ -5,12 +5,12 @@ import { AppProps } from 'next/app';
 import {wrapper}  from '../redux/store/store';
 import { useDispatch } from 'react-redux';
 import { END } from 'redux-saga';
-import { btnLoginClick } from 'redux/decorators_saga/identity';
+import { btnLoginClick } from 'redux/models/identity';
 
 
 
  function App({ Component, pageProps }) {
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
   // dispatch(btnLoginClick({
   //     email: "user7.man@gmail.ru",
   //     password: "user12345"
@@ -19,6 +19,13 @@ import { btnLoginClick } from 'redux/decorators_saga/identity';
 }
 
 App.getInitialProps = wrapper.getInitialAppProps(store => async ({ Component, ctx }) => {
+
+  // if (store.getState().identity.id === -1) {
+    // store.dispatch(btnLoginClick({
+    //   email: "user7.man@gmail.ru",
+    //   password: "user12345"
+    // }))
+  // }
 
   //   1. Wait for all page actions to dispatch
   const pageProps = {

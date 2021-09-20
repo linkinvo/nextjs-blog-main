@@ -2,35 +2,49 @@ import PropertiesModalComponents from 'components/PropertiesModalComponents';
 import  SiteHeader  from 'components/SiteHeader'
 import cookie from 'cookie-cutter';
 import { useSelector } from 'react-redux';
-import { getSinglePropertyInfo } from 'redux/models/PropertiesSaga';
+import { getPropertyById, getSinglePropertyInfo } from 'redux/models/PropertiesSaga';
 import { wrapper } from '../../redux/store/store'
+import {getUsers} from 'redux/models/UsersSaga'
+import {getReviewsByPropertyId} from 'redux/models/ReviewsSaga'
+import { IProperty } from 'src/common';
 
 
-export default function Property() { 
+export default function Property({id}) { 
+  
+  const properties = useSelector((state: any) => state.properties.items);
+  const users = useSelector((state: any) => state.users.items);
+  const reviews = useSelector((state: any) => state.reviews.items);
+  const identity = useSelector((state: any) => state.identity);
+let property;
+    if (properties.length !== 0 && !isNaN(id)) {
+      property = properties.find(p => {
+            return Number(p.id) === Number(id)
+        })
+    }
 
-  const property = useSelector((state: any) => state.propertiesReducer.property);
-
-  const userReducer = useSelector((state: any) => state.userReducer);
-
-console.log("343434343",property.reviews)
-
-
+  const ownerOfReview = (review)=>{
+    if(users!==undefined) {
+      return users.find(u => {
+        return Number(u.id) === Number(review.userId)
+    })
+    }
+  }
 
   return (
     <div className="min-h-screen bg-gray-200 antialiased xl:flex xl:flex-col xl:h-screen">
       <div className='xl:flex-shrink-0'>
-        <SiteHeader props={userReducer} />
+        <SiteHeader props={identity} />
       </div>
       
 {
-  property.reviews!==undefined?
+  reviews!==undefined?
   <>
   
   <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
         <div className="flex flex-col max-w-screen-lg overflow-hidden bg-white border rounded shadow-sm lg:flex-row sm:mx-auto">
           <div className="relative lg:w-1/2">
             <img
-              src={property.img}
+              src={property.img} //https://st.hzcdn.com/simgs/pictures/exteriors/denver-modern-home-materials-marketing-img~a07116690c6c2c62_9-1654-1-6fe352d.jpg
               alt="img"
               className="object-cover w-full lg:absolute h-80 lg:h-full"
             />
@@ -85,7 +99,7 @@ console.log("343434343",property.reviews)
 
         <div className="grid gap-8 lg:grid-cols-3 sm:max-w-sm sm:mx-auto lg:max-w-full">
           {
-            property.reviews.map((review) => {
+            reviews.map((review) => {
               return <div className="p-8 bg-white border rounded shadow-sm" key={review.id}>
                 <p className="mb-3 text-xs font-semibold tracking-wide uppercase">
                   <a
@@ -122,10 +136,11 @@ console.log("343434343",property.reviews)
                       title="Author"
                       className="font-semibold text-gray-800 transition-colors duration-200 hover:text-deep-purple-accent-400"
                     >
-
                     </a>
                     <p className="text-sm font-medium leading-4 text-gray-600">
-                      {review.user.firstName} {review.user.lastName}
+                      {
+                        ownerOfReview(review) ? <>{ownerOfReview(review).firstName}{' '}{ownerOfReview(review).lastName}</> : <></>
+                      }
                     </p>
                   </div>
                 </div>
@@ -151,8 +166,13 @@ console.log("343434343",property.reviews)
 
 // @ts-ignore
 Property.getInitialProps = wrapper.getInitialAppProps(store => (ctx: any) => {
-  console.warn(111111111111)
-  store.dispatch(getSinglePropertyInfo(ctx.query.id));
+  store.dispatch(getPropertyById(ctx.query.id));
+  store.dispatch(getReviewsByPropertyId(ctx.query.id));
+  store.dispatch(getUsers());
+
+  return {
+    id: ctx.query.id
+}
 
 }); 
 

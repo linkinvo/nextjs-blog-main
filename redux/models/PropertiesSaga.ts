@@ -3,53 +3,70 @@ import { action } from "redux/store/actions"
 import { IProperty } from "src/common"
 import { xRead } from "src/request"
 
-export const SET_PROPERTIES_INFO = 'SET_PROPERTIES_INFO'
-export const GET_PROPERTIES_INFO = 'GET_PROPERTIES_INFO'
 export const GET_SINGLE_PROPERTY_INFO = 'GET_SINGLE_PROPERTY_INFO'
 export const SET_SINGLE_PROPERTY_INFO = 'SET_SINGLE_PROPERTY_INFO'
-
 export const FIND_PROPERTY_BY_ID = 'FIND_PROPERTY_BY_ID'
 
+export const SET_ALL_PROPERTIES = 'SET_ALL_PROPERTIES';
+export const GET_ALL_PROPERTIES = 'GET_ALL_PROPERTIES';
+export const GET_PROPERTY_BY_ID = 'GET_PROPERTY_BY_ID';
+export const SET_PROPERTY_BY_ID = 'SET_PROPERTY_BY_ID';
 
+export const getAllProperties = () => action(GET_ALL_PROPERTIES);
+export const setAllProperties = (properties: Array<IProperty>) => action(SET_ALL_PROPERTIES, {properties});
+export const getPropertyById = (id: number) => action(GET_PROPERTY_BY_ID, {id});
+export const setPropertyById = (property: IProperty) => action(SET_PROPERTY_BY_ID, {property});
 
 export const findPropertyById = (id: string) => action(FIND_PROPERTY_BY_ID, { id });
-export const getPropertiesInfo = () => action(GET_PROPERTIES_INFO);
-export const setPropertiesInfo = (payload: Array<IProperty>) => action(SET_PROPERTIES_INFO, { payload });
 export const getSinglePropertyInfo = (id: number) => action(GET_SINGLE_PROPERTY_INFO, { id });
 export const setSinglePropertyInfo = (payload: IProperty) => action(SET_SINGLE_PROPERTY_INFO, { payload });
 
 
-export function* sagaGetProperties() {
-    while (true) {
-        yield take(GET_PROPERTIES_INFO);
-        let properties = yield select(state => state.propertiesReducer.properties);
-    if (properties.length <= 0) {
+export function* sagaGetAllProperties() {
+    while(true) {
+        yield take(GET_ALL_PROPERTIES);
+        let properties = yield select(state => state.properties.items);
+        console.log('properties!!!!!!!!!!!23', properties)
         const result = yield call(xRead, '/properties/', {});
         if (result.success === true && result.response.error === false) {
-            yield put(setPropertiesInfo(result.response.data))
+            if(properties.length !== result.response.data.length) {
+                yield put(setAllProperties(result.response.data))
+            }
         }
-    }
     }
 }
 
-export function* sagaGetAndSetSingleProperty() {
-    while (true) {
-        const data = yield take(GET_SINGLE_PROPERTY_INFO);
-        // const id = data.payload;
+export function* sagaGetPropertyById() {
+    while(true) {
+        const data = yield take(GET_PROPERTY_BY_ID);
         const id = data.id;
-        const result = yield call(xRead, '/properties/' + id, {});
-        if (result.success === true && result.response.error === false) {
-            console.log("sagaGetAndSetSingleProperties--")
-            yield put(setSinglePropertyInfo(result.response.data))
+        const properties = yield select(state => state.properties.items);
+        let property = undefined;
+        if(!isNaN(id)){
+            if(properties.length !== 0) {
+                property = properties.find(prop => {
+                    return Number(prop.id) === Number(id)
+                })
+            }
+            if(property === undefined) {
+                const result = yield call(xRead, '/properties/' + id, {});
+                if (result.success === true && result.response.error === false) {
+                    yield put(setPropertyById(result.response.data))
+                }
+            }
         }
     }
 }
+
+
 
 export default function* sagas() {
     yield all(
         [
-            call(sagaGetProperties),
-            call(sagaGetAndSetSingleProperty),
+            // call(sagaGetProperties),
+            // call(sagaGetAndSetSingleProperty),
+            call(sagaGetAllProperties),
+            call(sagaGetPropertyById),
         ]
     )
 }

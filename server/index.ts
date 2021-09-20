@@ -124,5 +124,7 @@ export const IGNORS = [
   '/api/users/login',
   '/api/users/registration',
   '/api/properties',
+  '/api/users/',
+  '/api/reviews/',
   // '/api/properties/by_token'
 ];

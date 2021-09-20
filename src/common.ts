@@ -1,6 +1,6 @@
 export interface IIdentity {
     id: any;
-    token?: string;
+    userToken?: string;
     firstName: string;
     lastName: string;
     email: string;
@@ -17,6 +17,15 @@ export interface IProperty {
     price?: number;
     rating?: number;
     img?: string;
+    createdAt?: number;
+    updatedAt?: number;
+}
+
+export interface IReview {
+    id?: number;
+    feedback?: string;
+    userId?: number;
+    propertiesId?: number;
     createdAt?: number;
     updatedAt?: number;
 }

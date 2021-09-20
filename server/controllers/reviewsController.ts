@@ -9,33 +9,6 @@ export default class ReviewsController extends BaseContext {
   @POST()
   create(req, res) { }
 
-  // @route("/get")
-  // @GET()
-  // async getAll(req, res) {
-  //   const { PropertiModel, ReviewsModel, UserModel} = this.di;
-  //   const reviews = await ReviewsModel.findAll({ include: [{ model: PropertiModel }, { model: UserModel }]});
-  //   return res.json(reviews);
-  // }
-
-  // @route("/get/:id")
-  // @GET()
-  // async getOne(req, res) {
-  //   const { id } = req.params;
-  //   const { PropertiModel, ReviewsModel, UserModel} = this.di;
-  //     ReviewsModel.findOne({
-  //       where: { id },  
-  //       include: [
-  //         { 
-  //           model: PropertiModel 
-  //         },
-  //          {
-  //             model: UserModel 
-  //           }
-  //         ]
-  //       })
-  //   .then((reviews) => res.json(reviews));
-  // }
-
   @route("/")
   @GET()
   getAllReviews(req: Request, res: Response) {
@@ -86,6 +59,33 @@ export default class ReviewsController extends BaseContext {
     return result
   }
 
+
+  
+  @route("/by_property_id/:id")
+  @GET()
+  findReviewsByPropertyId(req, res) {
+    const id = req.params.id;
+    const { ReviewsServices } = this.di;
+    return ReviewsServices.findReviewsByPropertyId(id)    
+    .then(data => {
+      const answer ={
+        data: data,
+        message: 'request successfull',
+        error: false
+      }
+      res.send(answer)
+    })
+    .catch(err => {
+      const answer = {
+        data: null,
+        message: err,
+        error: true
+      }
+      res.status(500).send(answer);
+    })
+  }
+
+  
   @route('/:id')
   @GET()
   getById(req: Request, res: Response) {

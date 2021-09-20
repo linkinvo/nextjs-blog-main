@@ -3,8 +3,10 @@ import createSagaMiddleware from 'redux-saga'
 import { createWrapper, HYDRATE } from 'next-redux-wrapper'
 
 import  rootWatcher  from '../decorators_saga/index'
-import userReducer from './userReducer'
-import propertiesReducer from './propertiesReducer'
+import users from './users'
+import properties from './properties'
+import identity from './identity'
+import reviews from './reviews'
 
 const bindMiddleware = (middleware) => {
     if (process.env.NODE_ENV !== 'production') {
@@ -15,12 +17,18 @@ const bindMiddleware = (middleware) => {
 }
 
 const appReducer = combineReducers({
-    userReducer,
-    propertiesReducer
+    users,
+    properties,
+    identity,
+    reviews,
 })
 
 let isHydrated = false;
+
 function nextReducer(state, action) {
+    if (action.type.includes('@@redux/INIT')) {
+        isHydrated = false;
+    }
     switch (action.type) {
         case HYDRATE: {
             if (!isHydrated) {

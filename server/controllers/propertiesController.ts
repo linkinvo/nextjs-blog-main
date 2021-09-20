@@ -35,6 +35,7 @@ export default class PropertiesController extends BaseContext {
     return result
   }
 
+  
   @route('/save/:id')
   @POST()
   save(req: Request, res: Response) {

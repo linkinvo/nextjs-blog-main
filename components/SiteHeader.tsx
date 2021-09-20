@@ -4,6 +4,7 @@ import Link from 'next/link'
 
 export default function Header({ props }) {
   const NOT_AUTHORIZED = props.id === '';
+  // const NOT_AUTHORIZED = props.id === -1;
   let firstName = props.firstName;
   let lastName = props.lastName;
   

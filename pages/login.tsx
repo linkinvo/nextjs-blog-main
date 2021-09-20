@@ -4,7 +4,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { useRouter } from 'next/router'
 import { useDispatch, useSelector } from "react-redux";
-import { btnLoginClick } from "redux/store/actions";
+import { btnLoginClick } from "redux/models/identity";
 
 
 
@@ -21,16 +21,15 @@ const login = () => {
             password: event.target.password.value,
         }))
 
-         if (event.success === true) {
-            if (event.response.errors === false) {
-                router.push({
-                    pathname: '/',
-                })
-            }
-            else alert(event.response.message)
-        }
-        else alert('Something wrong')
-        console.log(event)
+        //  if (event.success === true) {
+        //     if (event.response.errors === false) {
+        //         router.push({
+        //             pathname: '/',
+        //         })
+        //     }
+        // }
+        // else alert('Something wrong')
+        // console.log(event)
         
 
 
