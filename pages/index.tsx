@@ -3,10 +3,11 @@ import SearchFilters from 'components/SearchFilters';
 import SiteHeader from '../components/SiteHeader';
 import Layout from '../components/Layout'
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { getAllProperties } from 'redux/models/PropertiesSaga';
+import { getAllProperties, PropertyEntity } from 'redux/models/PropertiesSaga';
 import { xRead } from 'src/request';
 import { wrapper } from 'redux/store/store';
 import React from 'react'
+import { requestResult } from 'redux/models/Entity';
 
 
 
@@ -14,6 +15,7 @@ function Home() {
 
   const properties = useSelector((state: any) => state.properties.items);
   const identity = useSelector((state: any) => state.identity)
+  const entities = useSelector((state: any) => state.entities)
 
   return(
     <>
@@ -55,16 +57,20 @@ function Home() {
 Home.getInitialProps = wrapper.getInitialAppProps(store => () => {
 
   store.dispatch(getAllProperties());
+  // store.dispatch(requestResult());
 });
 
 const mapStateToProps = (state) => {
+  const { entities } = state;
+  console.log("ENTITIES", entities)
   return {
     properties: state.properties.items,
     identity: state.identity,
+    entities
   }
 }
 
-export default connect(mapStateToProps)(Home)
+export default connect(mapStateToProps, PropertyEntity)(Home)
 
 
 

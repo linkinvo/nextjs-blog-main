@@ -1,7 +1,11 @@
+// import { Entity } from 'redux/models/Entity';
 import { all, call, put, select, take } from 'redux-saga/effects';
 import { action } from 'redux/store/actions';
 import { xRead } from 'src/request';
-import { IIdentity } from '../../src/common';
+import { ENTITIES, IIdentity } from '../../src/common';
+import Entity from './Entity';
+import { schema } from 'normalizr';
+import { normalize } from 'normalizr';
 
 export interface User {
     userToken?: string;
@@ -13,6 +17,25 @@ export interface User {
     phone: string;
     role: string;
 }
+
+// ================================================
+
+// export class UserEntity extends Entity {
+//     constructor() {
+//         super(ENTITIES.USERS, {
+//             idAttribute: 'id'
+//         })}
+// }
+
+// export const userEntity = new UserEntity();
+
+export const userSchema = new schema.Entity(ENTITIES.USERS)
+
+// const normalizedData = normalize(data,userSchema);
+// ================================================
+
+
+
 
 export const GET_USERS = 'GET_USERS';
 export const SET_USERS = 'SET_USERS';

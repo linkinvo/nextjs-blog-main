@@ -84,7 +84,6 @@ const acl = (req: Request, res: Response, next: NextFunction) => {
       if (!isLogged) {
         const isAPICall = req.path.toLowerCase().includes('api')
         if (isAPICall) {
-      console.log('########$', isAPICall)
 
             return res.json({
               data : null,

@@ -45,18 +45,17 @@ export enum ROLE {
 
 export enum ENTITIES {
     USERS = 'users',
+    PROPERTIES = 'properties',
+    REVIEWS = 'reviews',
+    
 }
 
 
-// export interface SagaAction {
-//     saga: () => void;
-//     trigger: (data: any) => void;
-// }
+
 // export interface ISagaAction {
 //     [entity: string]: {
 //         [action: string]: {
 //             saga?: () => void;
-//             trigger: (data: any) => void;  //Dispatching actions
 //         },
 //     };
 // }

@@ -1,7 +1,9 @@
+import { schema } from "normalizr"
 import { all, call, put, take, select } from "redux-saga/effects"
 import { action } from "redux/store/actions"
-import { IProperty } from "src/common"
+import { ENTITIES, IProperty } from "src/common"
 import { xRead } from "src/request"
+import Entity from "./Entity"
 
 export const GET_SINGLE_PROPERTY_INFO = 'GET_SINGLE_PROPERTY_INFO'
 export const SET_SINGLE_PROPERTY_INFO = 'SET_SINGLE_PROPERTY_INFO'
@@ -21,12 +23,31 @@ export const findPropertyById = (id: string) => action(FIND_PROPERTY_BY_ID, { id
 export const getSinglePropertyInfo = (id: number) => action(GET_SINGLE_PROPERTY_INFO, { id });
 export const setSinglePropertyInfo = (payload: IProperty) => action(SET_SINGLE_PROPERTY_INFO, { payload });
 
+// ================================================
+
+ export class PropertyEntity extends Entity {
+    constructor() {
+        super(ENTITIES.PROPERTIES, {
+            user: new schema.Entity(ENTITIES.USERS),
+            reviews: [new schema.Entity(ENTITIES.REVIEWS)],
+        })
+    }
+}
+
+ const productEntity = new PropertyEntity();
+export default productEntity;
+
+// ================================================
+
+
+
+
+
 
 export function* sagaGetAllProperties() {
     while(true) {
         yield take(GET_ALL_PROPERTIES);
         let properties = yield select(state => state.properties.items);
-        console.log('properties!!!!!!!!!!!23', properties)
         const result = yield call(xRead, '/properties/', {});
         if (result.success === true && result.response.error === false) {
             if(properties.length !== result.response.data.length) {
@@ -60,13 +81,11 @@ export function* sagaGetPropertyById() {
 
 
 
-export default function* sagas() {
-    yield all(
-        [
-            // call(sagaGetProperties),
-            // call(sagaGetAndSetSingleProperty),
-            call(sagaGetAllProperties),
-            call(sagaGetPropertyById),
-        ]
-    )
-}
+// export default function* sagas() {
+//     yield all(
+//         [
+//             call(sagaGetAllProperties),
+//             call(sagaGetPropertyById),
+//         ]
+//     )
+// }
