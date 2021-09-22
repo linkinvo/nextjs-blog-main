@@ -2,7 +2,7 @@ import { useState } from "react";
 import Link from 'next/link'
 
 
-export default function Header({ props }) {
+export default function Header( props ) {
   const NOT_AUTHORIZED = props.id === '';
   // const NOT_AUTHORIZED = props.id === -1;
   let firstName = props.firstName;

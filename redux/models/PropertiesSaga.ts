@@ -1,9 +1,13 @@
-import { schema } from "normalizr"
+import { normalize, schema } from "normalizr"
 import { all, call, put, take, select } from "redux-saga/effects"
+import { setAllData } from "redux/saga/action"
 import { action } from "redux/store/actions"
+// import users from "redux/store/users"
 import { ENTITIES, IProperty } from "src/common"
 import { xRead } from "src/request"
 import Entity from "./Entity"
+import { reviewsSchema } from "./ReviewsSaga"
+import { usersSchema } from "./UsersSaga"
 
 export const GET_SINGLE_PROPERTY_INFO = 'GET_SINGLE_PROPERTY_INFO'
 export const SET_SINGLE_PROPERTY_INFO = 'SET_SINGLE_PROPERTY_INFO'
@@ -25,34 +29,22 @@ export const setSinglePropertyInfo = (payload: IProperty) => action(SET_SINGLE_P
 
 // ================================================
 
- export class PropertyEntity extends Entity {
-    constructor() {
-        super(ENTITIES.PROPERTIES, {
-            user: new schema.Entity(ENTITIES.USERS),
-            reviews: [new schema.Entity(ENTITIES.REVIEWS)],
-        })
-    }
-}
-
- const productEntity = new PropertyEntity();
-export default productEntity;
+export const productSchema = new schema.Entity(ENTITIES.PROPERTIES, {
+    // user: new schema.Entity(ENTITIES.USERS),
+    // reviews: [new schema.Entity(ENTITIES.USERS)],
+    user: usersSchema,
+    reviews: [reviewsSchema]
+});
 
 // ================================================
-
-
-
-
-
 
 export function* sagaGetAllProperties() {
     while(true) {
         yield take(GET_ALL_PROPERTIES);
-        let properties = yield select(state => state.properties.items);
         const result = yield call(xRead, '/properties/', {});
         if (result.success === true && result.response.error === false) {
-            if(properties.length !== result.response.data.length) {
-                yield put(setAllProperties(result.response.data))
-            }
+                const normalizedData = normalize(result.response.data, [productSchema]);
+                yield put(setAllData(normalizedData))
         }
     }
 }
@@ -61,31 +53,22 @@ export function* sagaGetPropertyById() {
     while(true) {
         const data = yield take(GET_PROPERTY_BY_ID);
         const id = data.id;
-        const properties = yield select(state => state.properties.items);
-        let property = undefined;
-        if(!isNaN(id)){
-            if(properties.length !== 0) {
-                property = properties.find(prop => {
-                    return Number(prop.id) === Number(id)
-                })
-            }
-            if(property === undefined) {
+
                 const result = yield call(xRead, '/properties/' + id, {});
                 if (result.success === true && result.response.error === false) {
-                    yield put(setPropertyById(result.response.data))
+                    const normalizedData = normalize(result.response.data, [productSchema]);
+                    yield put(setAllData(normalizedData))
                 }
             }
         }
-    }
+    
+
+
+export default function* sagas() {
+    yield all(
+        [
+            call(sagaGetAllProperties),
+            call(sagaGetPropertyById),
+        ]
+    )
 }
-
-
-
-// export default function* sagas() {
-//     yield all(
-//         [
-//             call(sagaGetAllProperties),
-//             call(sagaGetPropertyById),
-//         ]
-//     )
-// }

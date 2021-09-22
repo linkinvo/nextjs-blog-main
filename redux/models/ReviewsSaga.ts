@@ -1,8 +1,11 @@
-import { schema } from "normalizr";
+import { normalize, schema } from "normalizr";
 import { all, call, put, take, select } from "redux-saga/effects"
+import { setAllData } from "redux/saga/action";
 import { action } from "redux/store/actions";
 import { ENTITIES, IReview } from "src/common";
 import { xRead } from "src/request";
+import { productSchema } from "./PropertiesSaga";
+import { usersSchema } from "./UsersSaga";
 
 
 export const GET_REVIEWS_BY_PROPERTY_ID = 'GET_REVIEWS_B;Y_PROPERTY_ID';
@@ -13,12 +16,15 @@ export const setReviewsByPropertyId = (reviews: Array<IReview>) => action(SET_RE
 
 //===========================================================
 
-export const reviewsEntity = new schema.Entity('reviews', {
-    user: new schema.Entity(ENTITIES.USERS),
-    property: new schema.Entity(ENTITIES.PROPERTIES),
-},{
-    idAttribute: 'id'
-})
+export const reviewsSchema = new schema.Entity(
+    ENTITIES.REVIEWS,
+  {
+    // user: [new schema.Entity(ENTITIES.USERS)],
+    propertiId: [new schema.Entity(ENTITIES.PROPERTIES)],
+    userId: [usersSchema],
+    // propertiId: [productSchema]
+  }
+);
 
 //===========================================================
 
@@ -27,12 +33,13 @@ export function* sagaGetReviewsByPropertyId() {
     while(true) {
         const data = yield take(GET_REVIEWS_BY_PROPERTY_ID);
         let propertiId = data.propertiId;
-        let reviews = yield select(state => state.reviews.items);
+        let reviews = yield select(state => state.reviews);
         const result = yield call(xRead, '/reviews/by_property_id/' + propertiId, {})
         if(result.success === true && result.response.error === false){
+            const normalizedData = normalize(result.response.data, [reviewsSchema]);
             const arraysAreSame = JSON.stringify(reviews) === JSON.stringify(result.response.data);
             if(!arraysAreSame) {
-                yield put(setReviewsByPropertyId(result.response.data))
+                yield put(setAllData(normalizedData))
             }
         } 
     }

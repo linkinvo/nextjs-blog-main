@@ -4,14 +4,13 @@ import { createWrapper, HYDRATE } from 'next-redux-wrapper'
 // import { fromJS } from 'immutable';
 import { cloneDeep, merge } from 'lodash';
 
-import rootWatcher from '../saga/index'
-import users from './users'
-import properties from './properties'
+import {rootWatcher} from '../saga/index'
+// import users from './users'
+// import properties from './properties'
 import identity from './identity'
-import reviews from './reviews'
+// import reviews from './reviews'
 
-import Entity, { REQ_RESULT } from '../models/Entity'
-import { all } from 'redux-saga/effects';
+import { SET_ALL_DATA_SCHEMA } from 'redux/saga/action';
 
 
 const bindMiddleware = (middleware) => {
@@ -22,45 +21,19 @@ const bindMiddleware = (middleware) => {
     return applyMiddleware(...middleware)
 }
 
-// const initialEntities = cloneDeep({});
-
-// function entities(state = initialEntities, action: any) {
-//     switch (action.type) {
-//         case REQUEST_RESULT:
-//             const { data } = action;
-
-//             if (data.entities) {
-//                 Object.keys(data.entities).map((entityName) => {
-//                     let list = state(entityName);
-//                     if (list && list.size > 0) {
-//                         Object.keys(data.entities[entityName]).map((id) => list = list.remove(id));
-//                     }
-//                     state = state.set(entityName, list);
-//                 });
-//                 state = state(data.entities);
-//             }
-//             break;
-//     }
-//     return state;
-// }
-
-
-
 const initialEntities = cloneDeep({
-    users: [],
-    properties: [],
-    reviews: [],
-});
+// properties: []
+});  
 
-// Updates an entity cache in response to any action with response.entities.
 function entities(state = initialEntities, action: any) {
     switch (action.type) {
-        case REQ_RESULT:
+        
+        case SET_ALL_DATA_SCHEMA:
             // const { data } = action;
             if (action.response && action.response.entities) {
-            console.log("ACTION-ENTITIES", action)
 
                 const { response: { entities } } = action;
+
                 if (entities) {
                     Object.keys(entities).map((entityName) => {
                         let list = state[entityName];
@@ -80,10 +53,10 @@ function entities(state = initialEntities, action: any) {
 
 
 const appReducer = combineReducers({
-    users,
-    properties,
+    // users,
+    // properties,
     identity,
-    reviews,
+    // reviews,
     entities,
 })
 
@@ -112,10 +85,10 @@ function rootReducer(state, action) {
     return finalState;
 }
 
-const rootSaga = function* root() {
-    const sagaList = Entity.getSagaAll()
-    yield all(sagaList)
-}
+// const rootSaga = function* root() {
+//     const sagaAll = Entity.getSagaAll()
+//     yield all(sagaAll)
+// }
 
 
 
@@ -126,7 +99,7 @@ export const makeStore = (ctx) => {
 
     store.sagaTask = sagaMiddleware.run(rootWatcher) //{rootWatcher},
 
-    store.runSaga = () => sagaMiddleware.run(rootSaga)
+    store.runSaga = () => sagaMiddleware.run(rootWatcher) // {rootSaga}
 
     return store
 }

@@ -4,8 +4,8 @@ import { action } from 'redux/store/actions';
 import { xRead } from 'src/request';
 import { ENTITIES, IIdentity } from '../../src/common';
 import Entity from './Entity';
-import { schema } from 'normalizr';
-import { normalize } from 'normalizr';
+import { schema, normalize } from 'normalizr';
+import { setAllData } from 'redux/saga/action';
 
 export interface User {
     userToken?: string;
@@ -20,21 +20,11 @@ export interface User {
 
 // ================================================
 
-// export class UserEntity extends Entity {
-//     constructor() {
-//         super(ENTITIES.USERS, {
-//             idAttribute: 'id'
-//         })}
-// }
 
-// export const userEntity = new UserEntity();
+export const usersSchema = new schema.Entity(ENTITIES.USERS)
 
-export const userSchema = new schema.Entity(ENTITIES.USERS)
 
-// const normalizedData = normalize(data,userSchema);
 // ================================================
-
-
 
 
 export const GET_USERS = 'GET_USERS';
@@ -46,12 +36,13 @@ export const setUsers = (users: Array<IIdentity>) => action(SET_USERS, {users});
 export function* sagaGetUsers() {
     while(true) {
         yield take (GET_USERS);
-        let users = yield select(state => state.users.items);
+        let users = yield select(state => state.users);
         const result = yield call(xRead, '/user/', {});
         if(result.success === true && result.response.error === false) {
+            const normalizedData = normalize(result.response.data, [usersSchema]);
             const arraysAreSame =  JSON.stringify(users) === JSON.stringify(result.response.data);
             if(!arraysAreSame) {
-                yield put(setUsers(result.response.data))
+                yield put(setAllData(normalizedData))
             }
         }
     }

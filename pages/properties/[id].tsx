@@ -1,26 +1,32 @@
 import PropertiesModalComponents from 'components/PropertiesModalComponents';
 import  SiteHeader  from 'components/SiteHeader'
 import cookie from 'cookie-cutter';
-import { useSelector } from 'react-redux';
 import { getPropertyById, getSinglePropertyInfo } from 'redux/models/PropertiesSaga';
 import { wrapper } from '../../redux/store/store'
 import {getUsers} from 'redux/models/UsersSaga'
 import {getReviewsByPropertyId} from 'redux/models/ReviewsSaga'
-import { IProperty } from 'src/common';
+import { connect, useDispatch, useSelector } from 'react-redux';
 
 
-export default function Property({id}) { 
-  
-  const properties = useSelector((state: any) => state.properties.items);
-  const users = useSelector((state: any) => state.users.items);
-  const reviews = useSelector((state: any) => state.reviews.items);
-  const identity = useSelector((state: any) => state.identity);
-let property;
-    if (properties.length !== 0 && !isNaN(id)) {
-      property = properties.find(p => {
-            return Number(p.id) === Number(id)
-        })
-    }
+export  function Property(id) { 
+  const properties = id.properties;
+console.log("properties", properties)
+
+const reviews = id.reviews;
+
+console.log("REVIEWS",reviews)
+
+
+  // const properties = useSelector((state: any) => state.properties);
+  const users = useSelector((state: any) => state.users);
+  // const reviews = useSelector((state: any) => state.entities.reviews);
+  const identity = useSelector((state: any) => state.entities.identity);
+// let property;
+//     if (properties.length !== 0 && !isNaN(id)) {
+//       property = properties.find(p => {
+//             return Number(p.id) === Number(id)
+//         })
+//     }
 
   const ownerOfReview = (review)=>{
     if(users!==undefined) {
@@ -31,12 +37,13 @@ let property;
   }
 
   return (
+
     <div className="min-h-screen bg-gray-200 antialiased xl:flex xl:flex-col xl:h-screen">
       <div className='xl:flex-shrink-0'>
         <SiteHeader props={identity} />
       </div>
       
-{
+ {
   reviews!==undefined?
   <>
   
@@ -44,7 +51,7 @@ let property;
         <div className="flex flex-col max-w-screen-lg overflow-hidden bg-white border rounded shadow-sm lg:flex-row sm:mx-auto">
           <div className="relative lg:w-1/2">
             <img
-              src={property.img} //https://st.hzcdn.com/simgs/pictures/exteriors/denver-modern-home-materials-marketing-img~a07116690c6c2c62_9-1654-1-6fe352d.jpg
+              src={properties.img} //https://st.hzcdn.com/simgs/pictures/exteriors/denver-modern-home-materials-marketing-img~a07116690c6c2c62_9-1654-1-6fe352d.jpg
               alt="img"
               className="object-cover w-full lg:absolute h-80 lg:h-full"
             />
@@ -62,24 +69,24 @@ let property;
               <h5>Title</h5>
             </div>
             <h2 className="mb-3 m-4 text-green-600 text-3xl font-extrabold leading-none sm:text-4xl">
-              {property.price}/wk
+              {properties.price}/wk
             </h2>
             <div className='flex'>
               <div className='flex-1 inline-flex items-center'>
                 <svg className="h-6 w-6 text-gray-600 fill-current mr-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                   <path d="M0 16L3 5V1a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v4l3 11v5a1 1 0 0 1-1 1v2h-1v-2H2v2H1v-2a1 1 0 0 1-1-1v-5zM19 5h1V1H4v4h1V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1h2V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1zm0 1v2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V6h-2v2a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6H3.76L1.04 16h21.92L20.24 6H19zM1 17v4h22v-4H1zM6 4v4h4V4H6zm8 0v4h4V4h-4z"></path>
                 </svg>
-                {property.beds} beds
+                {properties.beds} beds
               </div>
               <div className='flex-1 inline-flex items-center'>
                 <svg className="h-6 w-6 text-gray-600 fill-current mr-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                   <path fillRule="evenodd" d="M17.03 21H7.97a4 4 0 0 1-1.3-.22l-1.22 2.44-.9-.44 1.22-2.44a4 4 0 0 1-1.38-1.55L.5 11h7.56a4 4 0 0 1 1.78.42l2.32 1.16a4 4 0 0 0 1.78.42h9.56l-2.9 5.79a4 4 0 0 1-1.37 1.55l1.22 2.44-.9.44-1.22-2.44a4 4 0 0 1-1.3.22zM21 11h2.5a.5.5 0 1 1 0 1h-9.06a4.5 4.5 0 0 1-2-.48l-2.32-1.15A3.5 3.5 0 0 0 8.56 10H.5a.5.5 0 0 1 0-1h8.06c.7 0 1.38.16 2 .48l2.32 1.15a3.5 3.5 0 0 0 1.56.37H20V2a1 1 0 0 0-1.74-.67c.64.97.53 2.29-.32 3.14l-.35.36-3.54-3.54.35-.35a2.5 2.5 0 0 1 3.15-.32A2 2 0 0 1 21 2v9zm-5.48-9.65l2 2a1.5 1.5 0 0 0-2-2zm-10.23 17A3 3 0 0 0 7.97 20h9.06a3 3 0 0 0 2.68-1.66L21.88 14h-7.94a5 5 0 0 1-2.23-.53L9.4 12.32A3 3 0 0 0 8.06 12H2.12l3.17 6.34z"></path>
-                </svg>{property.baths} baths
+                </svg>{properties.baths} baths
               </div>
 
             </div>
             <p className="mb-10 text-gray-800">
-              <span className="font-bold">{property.description}</span>
+              <span className="font-bold">{properties.description}</span>
             </p>
             <div className="flex-1 items-center">
               <button
@@ -99,7 +106,7 @@ let property;
 
         <div className="grid gap-8 lg:grid-cols-3 sm:max-w-sm sm:mx-auto lg:max-w-full">
           {
-            reviews.map((review) => {
+            Object.values(reviews).map((review: any) => {
               return <div className="p-8 bg-white border rounded shadow-sm" key={review.id}>
                 <p className="mb-3 text-xs font-semibold tracking-wide uppercase">
                   <a
@@ -171,10 +178,27 @@ Property.getInitialProps = wrapper.getInitialAppProps(store => (ctx: any) => {
   store.dispatch(getUsers());
 
   return {
-    id: ctx.query.id
+    id: ctx.query.id,
 }
 
 }); 
+
+const mapStateToProps = (state) => {
+  const { entities } = state;
+  console.log("ENTITIES_ID_PROPERTY", entities)
+  return {
+    properties: state.entities.properties,
+     identity: state.entities.identity,
+     reviews:state.entities.reviews,
+    entities
+  }
+}
+
+export default connect(mapStateToProps)(Property)
+
+
+
+
 
 // Property.getInitialProps = async (ctx) => {
 //   const res = await fetch(`http://localhost:3000/api/properties/${ctx.query.id}`);

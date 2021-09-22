@@ -1,24 +1,17 @@
-import { saga } from './../saga/index';
 import { action } from "redux/store/actions";
 import { schema } from "normalizr";
 import { cloneDeep, merge } from 'lodash';
 
-export interface IActionSaga {[entity: string]: {[action: string]: {saga?: () => void; }}}
+export interface IActionSaga {[entity: string]: {[action: string]: {payload?: () => void; }}}
+   //{ payload: any | void }
 
-// export enum HTTP_METHOD {
-//     GET = "GET",
-//     POST = 'POST',
-//     DELETE = 'DELETE'
-// }
-
-
-export const REQ_RESULT = "REQ_RESULT";
-export const requestResult = (entityName: string, data: any) => action(REQ_RESULT, { entityName, data });
+// export const REQ_RESULT = "REQ_RESULT";
+// export const requestResult = (entityName: string, data: any) => action(REQ_RESULT, { entityName, data });
 
 export default class Entity {
   private schema;
   private entityName;
-    static action: IActionSaga;
+  public static actions: IActionSaga = {};
 
   constructor(name: string, options: any = {}) {
     this.schema = new schema.Entity(name, options);
@@ -28,16 +21,13 @@ export default class Entity {
 
   public static getSagaAll() {
     const list = [];
-    console.log("LIST", list)
-    Object.keys(action).map((entity) => Object.keys(action[entity])
-        // .filter((method) => typeof action[entity][method].saga)      //"function"
-        .map((method) => list.push(action[entity][method].saga()))
+    Object.keys(Entity.actions).map((entity) => Object.keys(Entity.actions[entity])
+        .filter((method) => typeof action[entity][method].saga)      
+        .map((method) => list.push(Entity.actions[entity][method].payload()))
     );
     return list;
   }
 }
-
-
 
 // const initialEntities = cloneDeep({});
 
