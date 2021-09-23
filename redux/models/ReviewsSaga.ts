@@ -4,7 +4,7 @@ import { setAllData } from "redux/saga/action";
 import { action } from "redux/store/actions";
 import { ENTITIES, IReview } from "src/common";
 import { xRead } from "src/request";
-import { productSchema } from "./PropertiesSaga";
+import  productSchema  from "./PropertiesSaga";
 import { usersSchema } from "./UsersSaga";
 
 
@@ -14,37 +14,32 @@ export const SET_REVIEWS_BY_PROPERTY_ID = 'SET_REVIEWS_BY_PROPERTY_ID';
 export const getReviewsByPropertyId = (propertiId: number) => action(GET_REVIEWS_BY_PROPERTY_ID, {propertiId});
 export const setReviewsByPropertyId = (reviews: Array<IReview>) => action(SET_REVIEWS_BY_PROPERTY_ID, {reviews});
 
-//===========================================================
 
 export const reviewsSchema = new schema.Entity(
     ENTITIES.REVIEWS,
   {
-    // user: [new schema.Entity(ENTITIES.USERS)],
-    propertiId: [new schema.Entity(ENTITIES.PROPERTIES)],
-    userId: [usersSchema],
-    // propertiId: [productSchema]
+    // user: usersSchema,
+    propertiId: productSchema
   }
 );
-
-//===========================================================
 
 
 export function* sagaGetReviewsByPropertyId() {
     while(true) {
         const data = yield take(GET_REVIEWS_BY_PROPERTY_ID);
+
         let propertiId = data.propertiId;
-        let reviews = yield select(state => state.reviews);
+        console.log('sagaGetReviewsByPropertyId', propertiId)
+        // let reviews = yield select(state => state.reviews);
         const result = yield call(xRead, '/reviews/by_property_id/' + propertiId, {})
+
         if(result.success === true && result.response.error === false){
             const normalizedData = normalize(result.response.data, [reviewsSchema]);
-            const arraysAreSame = JSON.stringify(reviews) === JSON.stringify(result.response.data);
-            if(!arraysAreSame) {
                 yield put(setAllData(normalizedData))
-            }
         } 
     }
-
 }
+
 
 export default function* sagas() {
     yield all([

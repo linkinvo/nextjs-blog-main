@@ -5,18 +5,12 @@ import { xSave } from "src/request";
 import { IIdentity } from "src/common";
 import Entity from "./Entity";
 
-
-// ================================================
-
 export class Identity extends Entity {
   constructor() {
     super('Identity')
   }
 }
 export const identity = new Identity();
-
-// ================================================
-
 
 export const BTN_LOGIN_CLICK = 'BTN_LOGIN_CLICK'
 export const SET_USER_INFO = 'SET_USER_INFO'

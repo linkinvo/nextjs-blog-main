@@ -7,25 +7,7 @@ import Entity from './Entity';
 import { schema, normalize } from 'normalizr';
 import { setAllData } from 'redux/saga/action';
 
-export interface User {
-    userToken?: string;
-    id: number;
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-    phone: string;
-    role: string;
-}
-
-// ================================================
-
-
 export const usersSchema = new schema.Entity(ENTITIES.USERS)
-
-
-// ================================================
-
 
 export const GET_USERS = 'GET_USERS';
 export const SET_USERS = 'SET_USERS';

@@ -5,10 +5,7 @@ import { createWrapper, HYDRATE } from 'next-redux-wrapper'
 import { cloneDeep, merge } from 'lodash';
 
 import {rootWatcher} from '../saga/index'
-// import users from './users'
-// import properties from './properties'
 import identity from './identity'
-// import reviews from './reviews'
 
 import { SET_ALL_DATA_SCHEMA } from 'redux/saga/action';
 
@@ -21,9 +18,7 @@ const bindMiddleware = (middleware) => {
     return applyMiddleware(...middleware)
 }
 
-const initialEntities = cloneDeep({
-// properties: []
-});  
+const initialEntities = cloneDeep({});  
 
 function entities(state = initialEntities, action: any) {
     switch (action.type) {
@@ -53,10 +48,7 @@ function entities(state = initialEntities, action: any) {
 
 
 const appReducer = combineReducers({
-    // users,
-    // properties,
     identity,
-    // reviews,
     entities,
 })
 
@@ -97,9 +89,9 @@ export const makeStore = (ctx) => {
 
     const store: any = createStore(rootReducer, bindMiddleware([sagaMiddleware]))
 
-    store.sagaTask = sagaMiddleware.run(rootWatcher) //{rootWatcher},
+    store.sagaTask = sagaMiddleware.run(rootWatcher)
 
-    store.runSaga = () => sagaMiddleware.run(rootWatcher) // {rootSaga}
+    store.runSaga = () => sagaMiddleware.run(rootWatcher)
 
     return store
 }

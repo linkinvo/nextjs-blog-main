@@ -2,7 +2,6 @@ import { normalize, schema } from "normalizr"
 import { all, call, put, take, select } from "redux-saga/effects"
 import { setAllData } from "redux/saga/action"
 import { action } from "redux/store/actions"
-// import users from "redux/store/users"
 import { ENTITIES, IProperty } from "src/common"
 import { xRead } from "src/request"
 import Entity from "./Entity"
@@ -27,42 +26,36 @@ export const findPropertyById = (id: string) => action(FIND_PROPERTY_BY_ID, { id
 export const getSinglePropertyInfo = (id: number) => action(GET_SINGLE_PROPERTY_INFO, { id });
 export const setSinglePropertyInfo = (payload: IProperty) => action(SET_SINGLE_PROPERTY_INFO, { payload });
 
-// ================================================
 
-export const productSchema = new schema.Entity(ENTITIES.PROPERTIES, {
-    // user: new schema.Entity(ENTITIES.USERS),
-    // reviews: [new schema.Entity(ENTITIES.USERS)],
+export const propertySchema = new schema.Entity(ENTITIES.PROPERTIES, {
     user: usersSchema,
     reviews: [reviewsSchema]
 });
 
-// ================================================
 
 export function* sagaGetAllProperties() {
     while(true) {
         yield take(GET_ALL_PROPERTIES);
+
         const result = yield call(xRead, '/properties/', {});
         if (result.success === true && result.response.error === false) {
-                const normalizedData = normalize(result.response.data, [productSchema]);
+                const normalizedData = normalize(result.response.data, [propertySchema]);
                 yield put(setAllData(normalizedData))
         }
     }
 }
 
 export function* sagaGetPropertyById() {
-    while(true) {
+    while (true) {
         const data = yield take(GET_PROPERTY_BY_ID);
         const id = data.id;
-
-                const result = yield call(xRead, '/properties/' + id, {});
-                if (result.success === true && result.response.error === false) {
-                    const normalizedData = normalize(result.response.data, [productSchema]);
-                    yield put(setAllData(normalizedData))
-                }
-            }
+        const result = yield call(xRead, '/properties/' + id, {});
+        if (result.success === true && result.response.error === false) {
+            const normalizedData = normalize(result.response.data, propertySchema);
+            yield put(setAllData(normalizedData))
         }
-    
-
+    }
+}
 
 export default function* sagas() {
     yield all(
