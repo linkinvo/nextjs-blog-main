@@ -19,7 +19,7 @@ export const reviewsSchema = new schema.Entity(
     ENTITIES.REVIEWS,
   {
     // user: usersSchema,
-    propertiId: productSchema
+    // propertiId: productSchema
   }
 );
 

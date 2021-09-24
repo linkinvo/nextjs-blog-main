@@ -10,4 +10,5 @@ export const actionTypes = {
 
 export const SET_ALL_DATA_SCHEMA = 'SET_ALL_DATA_SCHEMA';
 
-export const setAllData = (response: any) => action(SET_ALL_DATA_SCHEMA, { response });
+export const setAllData = (entityName: string, data: {}) => action(SET_ALL_DATA_SCHEMA, { entityName, data });
+//response: any

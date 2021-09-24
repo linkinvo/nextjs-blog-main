@@ -27,56 +27,65 @@ export const getSinglePropertyInfo = (id: number) => action(GET_SINGLE_PROPERTY_
 export const setSinglePropertyInfo = (payload: IProperty) => action(SET_SINGLE_PROPERTY_INFO, { payload });
 
 
-export const propertySchema = new schema.Entity(ENTITIES.PROPERTIES, {
-    user: usersSchema,
-    reviews: [reviewsSchema]
-});
+// export const propertySchema = new schema.Entity(ENTITIES.PROPERTIES, {
+//     user: usersSchema,
+//     reviews: [reviewsSchema]
+// });
 
-class PropertyEntity extends Entity {
-
-    constructor () {
+ class PropertyEntity extends Entity {
+    constructor() {
         super(ENTITIES.PROPERTIES, {
             user: usersSchema,
             reviews: [reviewsSchema]
         })
 
-        // addsagas
+        this.sagaGetAllProperties = this.sagaGetAllProperties.bind(this)
     }
 
-     public * sagaGetAllProperties() {
+    // public * addSagas(){
+    //     yield all(
+    //         [
+    //             call(this.sagaGetAllProperties),
+    //             call(this.sagaGetPropertyById),
+    //         ]
+    //     )
+    // }
 
-        while(true) {
+    public * sagaGetAllProperties(data) {
+console.log("sagaGetAllProperties")
+        while (true) {
             yield take(GET_ALL_PROPERTIES);
-    
-            const result = yield call(this.xRead, '/properties/', {});
-            if (result.success === true && result.response.error === false) {
-                    const normalizedData = normalize(result.response.data, [propertySchema]);
-                    yield put(setAllData(normalizedData))
-            }
+            const result = yield call(this.xRead, '/properties/', data);
+            console.log("{}{}{}{}{}{}", result)
+        }
+    }
+
+    public * sagaGetPropertyById() {
+        while (true) {
+            const data = yield take(GET_PROPERTY_BY_ID);
+            const id = data.id;
+            const result = yield call(this.xRead, '/properties/' + id, {});
+            // if (result.success === true && result.response.error === false) {
+            //     const normalizedData = normalize(result.response.data, propertySchema);
+            //     yield put(setAllData(normalizedData))
+            // }
         }
     }
 
 }
 
+const propertyEntity = new PropertyEntity();
+export default propertyEntity;
 
 
-export function* sagaGetPropertyById() {
-    while (true) {
-        const data = yield take(GET_PROPERTY_BY_ID);
-        const id = data.id;
-        const result = yield call(xRead, '/properties/' + id, {});
-        if (result.success === true && result.response.error === false) {
-            const normalizedData = normalize(result.response.data, propertySchema);
-            yield put(setAllData(normalizedData))
-        }
-    }
-}
 
-export default function* sagas() {
-    yield all(
-        [
-            call(sagaGetAllProperties),
-            call(sagaGetPropertyById),
-        ]
-    )
-}
+
+
+// export default function* sagas() {
+//     yield all(
+//         [
+//             call(sagaGetAllProperties),
+//             call(sagaGetPropertyById),
+//         ]
+//     )
+// }
