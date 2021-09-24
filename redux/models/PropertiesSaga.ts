@@ -3,7 +3,7 @@ import { all, call, put, take, select } from "redux-saga/effects"
 import { setAllData } from "redux/saga/action"
 import { action } from "redux/store/actions"
 import { ENTITIES, IProperty } from "src/common"
-import { xRead } from "src/request"
+// import { xRead } from "src/request"
 import Entity from "./Entity"
 import { reviewsSchema } from "./ReviewsSaga"
 import { usersSchema } from "./UsersSaga"
@@ -32,18 +32,33 @@ export const propertySchema = new schema.Entity(ENTITIES.PROPERTIES, {
     reviews: [reviewsSchema]
 });
 
+class PropertyEntity extends Entity {
 
-export function* sagaGetAllProperties() {
-    while(true) {
-        yield take(GET_ALL_PROPERTIES);
+    constructor () {
+        super(ENTITIES.PROPERTIES, {
+            user: usersSchema,
+            reviews: [reviewsSchema]
+        })
 
-        const result = yield call(xRead, '/properties/', {});
-        if (result.success === true && result.response.error === false) {
-                const normalizedData = normalize(result.response.data, [propertySchema]);
-                yield put(setAllData(normalizedData))
+        // addsagas
+    }
+
+     public * sagaGetAllProperties() {
+
+        while(true) {
+            yield take(GET_ALL_PROPERTIES);
+    
+            const result = yield call(this.xRead, '/properties/', {});
+            if (result.success === true && result.response.error === false) {
+                    const normalizedData = normalize(result.response.data, [propertySchema]);
+                    yield put(setAllData(normalizedData))
+            }
         }
     }
+
 }
+
+
 
 export function* sagaGetPropertyById() {
     while (true) {

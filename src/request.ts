@@ -2,7 +2,7 @@ import { HTTP_METHOD } from "./common";
 
 const SERVER_URL = 'http://localhost:3000';
 
-// export class Identity  {
+// export class BaseEntity  {
 //     constructor() {
 //         super('Identity');
 //     }

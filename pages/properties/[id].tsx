@@ -1,5 +1,5 @@
 
-import PropertiesModalComponents from 'components/PropertiesModalComponents';
+import PropertiesModalComponents from 'components/propertiesComponent/PropertiesModalComponents';
 import { getPropertyById } from 'redux/models/PropertiesSaga';
 import { wrapper } from '../../redux/store/store'
 import { connect } from 'react-redux';

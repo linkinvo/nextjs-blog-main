@@ -11,7 +11,7 @@ const prodConfig = {
 
     siteName: 'Some Web Site',
     dialect: "mysql",
-    baseUrl: '',
+    baseUrl: 'http://localhost:3000',
     dev: isDev,
     jest: isJest,
     port: process.env.PORT || 3000,

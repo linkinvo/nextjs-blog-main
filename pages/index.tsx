@@ -20,7 +20,7 @@ function Home(props) {
             <h1>There are not any products...</h1>
           </div>
           :
-          <div className="min-h-screen bg-gray-200 antialiased xl:flex xl:flex-col xl:h-screen">
+          <div className="min-h-screen  antialiased xl:flex xl:flex-col xl:h-screen">
             <div className='xl:flex-1 xl:flex '>
               <main className='mt-6 xl:flex-1 xl:overflow-y-scroll'>
                 <div className='px-4 xl:px-8'>
@@ -28,6 +28,7 @@ function Home(props) {
                   <p className='text-gray-600'>Live like the stars in these luxurious Southern California estates.</p>
                 </div>
                 <div className=' mt-6'>
+                  
                   <div className='flex flex-wrap px-4 sm:inline-flex sm:pt-2 sm:pb-8 xl:px-8 gap-5'>
 
                     {
@@ -40,8 +41,8 @@ function Home(props) {
                           </Link>
                         </div>
                         <div className='relative px-4 -mt-16'>
-                          <div className='bg-white rounded-lg px-4 py-4 shadow-lg'>
-                            <Link key={properties.id} href={`/properties/${properties.id}`}>
+                          <div className='bg-white rounded-lg px-4 py-3 shadow-lg'>
+                            {/* <Link key={properties.id} href={`/properties/${properties.id}`}> */}
                               <a><div className='flex'>
                                 <span className="inline-block px-2 py-1 leading-none bg-green-200 text-green-800 rounded-full font-semibold uppercase tracking-wide text-xs">
                                   Plus
@@ -50,7 +51,7 @@ function Home(props) {
                                   {info.beds} beds &bull; {info.baths} baths
                                 </div>
                               </div></a>
-                            </Link>
+                            {/* </Link> */}
                             <h4 className='mt-1 text-gray-900 font-semibold text-lg'>{info.description}</h4>
                             <div className='mt-1'>
                               <span className='text-gray-900'>$ {info.price}/wk</span>
