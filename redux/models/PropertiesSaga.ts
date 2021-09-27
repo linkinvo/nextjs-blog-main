@@ -1,12 +1,12 @@
 import { normalize, schema } from "normalizr"
 import { all, call, put, take, select } from "redux-saga/effects"
-import { setAllData } from "redux/saga/action"
+import { setAllDataAC} from "redux/saga/action"
 import { action } from "redux/store/actions"
 import { ENTITIES, IProperty } from "src/common"
 // import { xRead } from "src/request"
 import Entity from "./Entity"
-import { reviewsSchema } from "./ReviewsSaga"
-import { usersSchema } from "./UsersSaga"
+import reviewEntity from "./ReviewsSaga"
+import userEntity from "./UsersSaga" 
 
 export const GET_SINGLE_PROPERTY_INFO = 'GET_SINGLE_PROPERTY_INFO'
 export const SET_SINGLE_PROPERTY_INFO = 'SET_SINGLE_PROPERTY_INFO'
@@ -26,77 +26,42 @@ export const findPropertyById = (id: string) => action(FIND_PROPERTY_BY_ID, { id
 export const getSinglePropertyInfo = (id: number) => action(GET_SINGLE_PROPERTY_INFO, { id });
 export const setSinglePropertyInfo = (payload: IProperty) => action(SET_SINGLE_PROPERTY_INFO, { payload });
 
-
-// export const propertySchema = new schema.Entity(ENTITIES.PROPERTIES, {
-//     user: usersSchema,
-//     reviews: [reviewsSchema]
-// });
-
  class PropertyEntity extends Entity {
     constructor() {
         super(ENTITIES.PROPERTIES, {
-            user: usersSchema,
-            reviews: [reviewsSchema]
-        })
-
-        Entity.addAction(call([this.sagaGetAllProperties, this.sagaGetPropertyById]));
-        // Entity.getActions();
-        this.sagaGetAllProperties = this.sagaGetAllProperties.bind(this)
-        this.sagas = this.sagas.bind(this)
+            user: userEntity.getSchema(),
+            reviews: [reviewEntity.getSchema()]
+        });
+        this.sagaGetAllProperties = this.sagaGetAllProperties.bind(this);
+        Entity.addAction(this.sagaGetAllProperties);
+        this.xRead = this.xRead.bind(this);
+        this.normalizeEntity = this.normalizeEntity.bind(this);
     }
-
-    // public * addSagas(){
-    //     yield all(
-    //         [
-    //             call(this.sagaGetAllProperties),
-    //             call(this.sagaGetPropertyById),
-    //         ]
-    //     )
-    // }
-
     
 
      public * sagaGetAllProperties() {
-         console.log("FUNCTION")
          while (true) {
              yield take(GET_ALL_PROPERTIES);
-             const result = yield call(this.xRead, '/properties/', {});
-             console.log("{}{}{}{}{}{}", result)
+             const result = yield call(this.xRead, '/properties/');
+             const normalizedData = yield call(this.normalizeEntity, result);
+             yield put(setAllDataAC(this.getEntityName(), normalizedData));
          }
      }
 
-    public * sagaGetPropertyById() {
-        while (true) {
-            const data = yield take(GET_PROPERTY_BY_ID);
-            const id = data.id;
-            const result = yield call(this.xRead, '/properties/' + id, {});
-            // if (result.success === true && result.response.error === false) {
-            //     const normalizedData = normalize(result.response.data, propertySchema);
-            //     yield put(setAllData(normalizedData))
-            // }
-        }
-    }
 
-    public * sagas() {
-        yield all([
-            (this.sagaGetAllProperties)
-        ])
-    }
+    // public * sagaGetPropertyById() {
+    //     while (true) {
+    //         const data = yield take(GET_PROPERTY_BY_ID);
+    //         const id = data.id;
+    //         const result = yield call(this.xRead, '/properties/' + id, {});
+    //         // if (result.success === true && result.response.error === false) {
+    //         //     const normalizedData = normalize(result.response.data, propertySchema);
+    //         //     yield put(setAllData(normalizedData))
+    //         // }
+    //     }
+    // }
 
 }
 
 const propertyEntity = new PropertyEntity();
 export default propertyEntity;
-
-
-
-
-
-// export default function* sagas() {
-//     yield all(
-//         [
-//             call(sagaGetAllProperties),
-//             call(sagaGetPropertyById),
-//         ]
-//     )
-// }

@@ -20,15 +20,9 @@ import Entity from "redux/models/Entity";
 //     )
 // }
 
-// Entity.actions[entityName][method].saga
-
-
-function* uploadFiles(files) {
-   
-  }
 
 export const rootWatcher = function* root() {
-    const sagaAll = Entity.actions
-    yield sagaAll.map(saga => call(saga))
-    console.log("rootWatcher", sagaAll)
+  const sagaAll = Entity.getActions();
+  console.log("sagaAll", sagaAll)
+  yield all(sagaAll.map(saga => call(saga)))
 }
