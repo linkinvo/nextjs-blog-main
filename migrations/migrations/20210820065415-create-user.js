@@ -11,6 +11,7 @@ module.exports = {
       role enum('ADMIN','CLIENT') DEFAULT NULL,
       phone varchar(255) DEFAULT NULL,
       email varchar(255) DEFAULT NULL,
+      userToken varchar(1000) DEFAULT NULL,
       createdAt bigint(20) NOT NULL,
       updatedAt bigint(20) NOT NULL,
       PRIMARY KEY (id),

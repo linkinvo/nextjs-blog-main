@@ -14,7 +14,7 @@ module.exports = {
       updatedAt bigint(20) NOT NULL,
       PRIMARY KEY (id),
       KEY idx_created_at (createdAt),
-      KEY fk_reviews_users_idx (userAt),
+      KEY fk_reviews_users_idx (userId),
       CONSTRAINT fk_reviews_users FOREIGN KEY (userId) REFERENCES users (id) ON DELETE CASCADE ON UPDATE NO ACTION
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
