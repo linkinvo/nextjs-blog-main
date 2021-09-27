@@ -106,6 +106,7 @@ const mapStateToProps = (state, props) => {
     property: state?.entities?.properties[props.id],
     identity: state.identity,
     reviews: reviews.filter((item: any) => item.propertiId == props.id),
+    users:state.users,
   }
 }
 

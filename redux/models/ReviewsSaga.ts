@@ -5,6 +5,7 @@ import { action } from "redux/store/actions";
 import { ENTITIES, IReview } from "src/common";
 import { xRead } from "src/request";
 import Entity from "./Entity";
+import userEntity from "./UsersSaga";
 
 export const GET_REVIEWS_BY_PROPERTY_ID = 'GET_REVIEWS_B;Y_PROPERTY_ID';
 export const SET_REVIEWS_BY_PROPERTY_ID = 'SET_REVIEWS_BY_PROPERTY_ID';
@@ -16,13 +17,15 @@ export const setReviewsByPropertyId = (reviews: Array<IReview>) => action(SET_RE
 // export const reviewsSchema = new schema.Entity(
 //     ENTITIES.REVIEWS,
 //     {
-//         // user: usersSchema,
+//         // user: usersSchema,    
 //         // propertiId: productSchema
 //     }
 // );
 class ReviewEntity extends Entity {
     constructor() {
-        super(ENTITIES.REVIEWS, {});
+        super(ENTITIES.REVIEWS, {
+            user: userEntity.getSchema(),
+        });
         this.sagaGetReviewsByPropertyId = this.sagaGetReviewsByPropertyId.bind(this);
         Entity.addAction(this.sagaGetReviewsByPropertyId);
         this.xRead = this.xRead.bind(this);

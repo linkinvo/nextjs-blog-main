@@ -3,11 +3,10 @@ import { connect } from 'react-redux';
 import { getPropertyById } from 'redux/models/PropertiesSaga';
 import { wrapper } from '../../redux/store/store'
 
-const reviewsCard = ({ reviews }) => {
-  console.log('reviews', reviews)
+const reviewsCard = ({ review,user }) => {
   return (
 
-    <div className="p-8 bg-white border rounded shadow-sm" key={reviews.id}>
+    <div className="p-8 bg-white border rounded shadow-sm" key={review.id}>
       <p className="mb-3 text-xs font-semibold tracking-wide uppercase">
         <a
           className="transition-colors duration-200 text-deep-purple-accent-400 hover:text-deep-purple-800"
@@ -15,10 +14,10 @@ const reviewsCard = ({ reviews }) => {
         >
           data-add
         </a>
-        <span className="text-gray-600">—{reviews.createdAt}</span>
+        <span className="text-gray-600">—{review.createdAt}</span>
       </p>
       {/* //feedback */}
-      <p className="mb-5 text-gray-700">{reviews.feedback}</p>
+      <p className="mb-5 text-gray-700">{review.feedback}</p>
       <div className="flex items-center">
         <a aria-label="Author" title="Author" className="mr-3">
           <img
@@ -37,7 +36,7 @@ const reviewsCard = ({ reviews }) => {
           </a>
           <p className="text-sm font-medium leading-4 text-gray-600">
             {
-              reviews.user && reviews.user.firstName
+              user && user.firstName
             }
           </p>
         </div>
@@ -48,4 +47,12 @@ const reviewsCard = ({ reviews }) => {
   );
 };
 
-export default reviewsCard;
+const mapStateToProps = (state, props) => {
+  const users = Object.values(state.entities.users);
+  return {
+    review: props.review,
+    user: users.filter((item: any) => item.id == props.review.userId)[0],
+  }
+}
+
+export default connect(mapStateToProps)(reviewsCard)
