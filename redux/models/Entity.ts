@@ -4,14 +4,10 @@ import { HTTP_METHOD } from "src/common";
 import config from '../../config';
 import { setAllData, action  } from 'redux/saga/action';
 
-// export interface IActionSaga {[entity: string]: {[action: string]: {payload?: () => void; }}}
-//{ payload: any | void }
-
-
 export default class Entity {
   private schema;
   private entityName;
-  // public static actions: IActionSaga = {};
+  public static actions: any = [];
 
   constructor(name: string, options: any = {}) {
 
@@ -22,6 +18,8 @@ export default class Entity {
     this.actionRequest = this.actionRequest.bind(this);
     this.xRead = this.xRead.bind(this);
     this.xSave = this.xSave.bind(this);
+    Entity.addAction = Entity.addAction.bind(this);
+    Entity.getActions = Entity.getActions.bind(this);
   }
 
   private xFetch = (endpoint: string, method: HTTP_METHOD, data = {}, token?: string) => {
@@ -58,23 +56,40 @@ export default class Entity {
   }
 
 
+  protected static addAction(saga) {
+    Entity.actions.push(saga);
+    console.log("SAGA", saga)
+  }
+
+  public static getActions() {
+    let sagaList = [];
+    
+    Entity.actions.push((entity) => {
+      Entity.actions[entity]
+    }).map((mapV) => sagaList.push(Entity.actions[entity][mapV].saga()))
+    
+    return sagaList;
+  }
+
   public * actionRequest(endpoint?: string, method?: HTTP_METHOD, data?: any, token?: string){
     const UserToken = token
     console.log("actionRequest")
+
     // let result = response.data;
         // let result = this.entityName 
     // if (result.success === true && result.response.error === false) {
+
                 const normalizedData = normalize(data, this.schema);
                 yield put(setAllData( this.entityName, normalizedData))
+
             // }
-
-
 
             // if (result.success === true && result.response.error === false) {
             //     const normalizedData = normalize(result.response.data, propertySchema);
             //     yield put(setAllData(normalizedData))
             // }
-    // return this.xFetch(endpoint, method, data, UserToken);
+
+    // return this.xFetch(endpoint, method, data, UserToken)
     return this.xFetch(endpoint, method, data, UserToken,  );
   }
 

@@ -77,10 +77,6 @@ function rootReducer(state, action) {
     return finalState;
 }
 
-// const rootSaga = function* root() {
-//     const sagaAll = Entity.getSagaAll()
-//     yield all(sagaAll)
-// }
 
 
 

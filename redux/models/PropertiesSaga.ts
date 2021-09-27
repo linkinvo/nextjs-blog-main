@@ -39,7 +39,10 @@ export const setSinglePropertyInfo = (payload: IProperty) => action(SET_SINGLE_P
             reviews: [reviewsSchema]
         })
 
+        Entity.addAction(call([this.sagaGetAllProperties, this.sagaGetPropertyById]));
+        // Entity.getActions();
         this.sagaGetAllProperties = this.sagaGetAllProperties.bind(this)
+        this.sagas = this.sagas.bind(this)
     }
 
     // public * addSagas(){
@@ -51,14 +54,16 @@ export const setSinglePropertyInfo = (payload: IProperty) => action(SET_SINGLE_P
     //     )
     // }
 
-    public * sagaGetAllProperties(data) {
-console.log("sagaGetAllProperties")
-        while (true) {
-            yield take(GET_ALL_PROPERTIES);
-            const result = yield call(this.xRead, '/properties/', data);
-            console.log("{}{}{}{}{}{}", result)
-        }
-    }
+    
+
+     public * sagaGetAllProperties() {
+         console.log("FUNCTION")
+         while (true) {
+             yield take(GET_ALL_PROPERTIES);
+             const result = yield call(this.xRead, '/properties/', {});
+             console.log("{}{}{}{}{}{}", result)
+         }
+     }
 
     public * sagaGetPropertyById() {
         while (true) {
@@ -70,6 +75,12 @@ console.log("sagaGetAllProperties")
             //     yield put(setAllData(normalizedData))
             // }
         }
+    }
+
+    public * sagas() {
+        yield all([
+            (this.sagaGetAllProperties)
+        ])
     }
 
 }
