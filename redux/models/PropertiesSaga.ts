@@ -33,7 +33,9 @@ export const setSinglePropertyInfo = (payload: IProperty) => action(SET_SINGLE_P
             reviews: [reviewEntity.getSchema()]
         });
         this.sagaGetAllProperties = this.sagaGetAllProperties.bind(this);
+        this.sagaGetPropertyById = this.sagaGetPropertyById.bind(this);
         Entity.addAction(this.sagaGetAllProperties);
+        Entity.addAction(this.sagaGetPropertyById);
         this.xRead = this.xRead.bind(this);
         this.normalizeEntity = this.normalizeEntity.bind(this);
     }
@@ -49,17 +51,15 @@ export const setSinglePropertyInfo = (payload: IProperty) => action(SET_SINGLE_P
      }
 
 
-    // public * sagaGetPropertyById() {
-    //     while (true) {
-    //         const data = yield take(GET_PROPERTY_BY_ID);
-    //         const id = data.id;
-    //         const result = yield call(this.xRead, '/properties/' + id, {});
-    //         // if (result.success === true && result.response.error === false) {
-    //         //     const normalizedData = normalize(result.response.data, propertySchema);
-    //         //     yield put(setAllData(normalizedData))
-    //         // }
-    //     }
-    // }
+     public * sagaGetPropertyById() {
+         while (true) {
+             const data = yield take(GET_PROPERTY_BY_ID);
+             const id = data.id;
+             const result = yield call(this.xRead, '/properties/' + id);
+             const normalizedData = yield call(this.normalizeEntity, result);
+             yield put(setAllDataAC(this.getEntityName(), normalizedData));
+         }
+     }
 
 }
 

@@ -82,8 +82,9 @@ export default class Entity {
 
   public normalizeEntity(result: any) {
     if (result.success === true && result.response.error === false) {
-      const normalizedData = normalize(result.response.data, [this.getSchema()]);
-      return normalizedData;
+      const newResult = result.response.data;
+      if (Array.isArray(newResult) === true) return normalize(result.response.data, [this.getSchema()]);
+      else return normalize(result.response.data, this.getSchema());
     }
   }
 
