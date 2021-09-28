@@ -1,8 +1,8 @@
 import { put, select, take } from 'redux-saga/effects';
 import { normalize, schema } from "normalizr";
 import { HTTP_METHOD } from "src/common";
-import config from '../../config';
 import { setAllDataAC, action, GET_ALL_DATA_SCHEMA  } from 'redux/saga/action';
+import next from '../../next.config';
 
 
 
@@ -36,7 +36,7 @@ export default class Entity {
   }
 
   private xFetch = (endpoint: string, method: HTTP_METHOD, data = {}, token?: string) => {
-    let fullUrl = 'http://localhost:3000' + '/api' + endpoint; 
+    let fullUrl = next.baseUrl + '/api' + endpoint; 
     // config.baseUrl 
 
     const params: any = {
@@ -81,6 +81,7 @@ export default class Entity {
   // }
 
   public normalizeEntity(result: any) {
+    const schema = [this.getSchema()]
     if (result.success === true && result.response.error === false) {
       const newResult = result.response.data;
       if (Array.isArray(newResult) === true) return normalize(result.response.data, [this.getSchema()]);
@@ -97,6 +98,7 @@ export default class Entity {
   }
 
   public actionRequest(endpoint?: string, method?: HTTP_METHOD, data?: any, token?: string){
+
     return this.xFetch(endpoint, method, data, token);
   }
 
