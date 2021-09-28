@@ -5,7 +5,7 @@ import { xRead } from 'src/request';
 import { ENTITIES, IIdentity } from '../../src/common';
 import Entity from './Entity';
 import { schema, normalize } from 'normalizr';
-import { setAllData, setAllDataAC } from 'redux/saga/action';
+import { setAllDataAC } from 'redux/saga/action';
 
 
 export const GET_USERS = 'GET_USERS';
