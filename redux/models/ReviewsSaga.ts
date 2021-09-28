@@ -13,14 +13,6 @@ export const SET_REVIEWS_BY_PROPERTY_ID = 'SET_REVIEWS_BY_PROPERTY_ID';
 export const getReviewsByPropertyId = (propertiId: number) => action(GET_REVIEWS_BY_PROPERTY_ID, { propertiId });
 export const setReviewsByPropertyId = (reviews: Array<IReview>) => action(SET_REVIEWS_BY_PROPERTY_ID, { reviews });
 
-
-// export const reviewsSchema = new schema.Entity(
-//     ENTITIES.REVIEWS,
-//     {
-//         // user: usersSchema,    
-//         // propertiId: productSchema
-//     }
-// );
 class ReviewEntity extends Entity {
     constructor() {
         super(ENTITIES.REVIEWS, {
@@ -36,11 +28,8 @@ class ReviewEntity extends Entity {
         while (true) {
             const data = yield take(GET_REVIEWS_BY_PROPERTY_ID);
             let propertiId = data.propertiId;
-            console.log('sagaGetReviewsByPropertyId', propertiId)
             const result = yield call(xRead, '/reviews/by_property_id/' + propertiId, {})
-            console.log("result", result);
             const { normalizedData, entName } = yield call(this.normalizeEntity, result);
-            console.log("normalizedData, entName", normalizedData, this.getEntityName());
             yield put(setAllDataAC(this.getEntityName(), normalizedData));
         }
     }

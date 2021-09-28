@@ -1,7 +1,7 @@
 import { put, select, take } from 'redux-saga/effects';
 import { normalize, schema } from "normalizr";
 import { HTTP_METHOD } from "src/common";
-import { setAllDataAC, action,  } from 'redux/saga/action';
+import { setAllDataAC, action, GET_ALL_DATA_SCHEMA  } from 'redux/saga/action';
 import next from '../../next.config';
 
 
@@ -68,6 +68,17 @@ export default class Entity {
       );
   }
 
+  // private * getAllData() {
+  //   while(true) {
+  //     console.log("* getAllData")
+  //     const result = yield take(GET_ALL_DATA_SCHEMA);
+  //     console.log("GET_ALL_DATA_SCHEMA")
+  //     if (result.success === true && result.response.error === false) {
+  //       const normalizedData = normalize(result.response.data, this.schema);
+  //       yield put(setAllDataAC(this.entityName, normalizedData))
+  //     }
+  //   }
+  // }
 
   public normalizeEntity(result: any) {
     const schema = [this.getSchema()]
@@ -86,13 +97,9 @@ export default class Entity {
     return Entity.actions;
   }
 
-  public * actionRequest(endpoint?: string, method?: HTTP_METHOD, data?: any, token?: string){
-    // const result  = yeld call(this.xFetch, endpoint, method, data, token)
-    // const { normalizedData } = this.normalizeEntity, result;
-    // console.log("normalizedData, entName", normalizedData, this.getEntityName());
-    // yield put(setAllDataAC(this.getEntityName(), normalizedData));
+  public actionRequest(endpoint?: string, method?: HTTP_METHOD, data?: any, token?: string){
 
-    // return result
+    return this.xFetch(endpoint, method, data, token)
   }
 
   public xSave(point: string, data: any = {}, token?: string){
