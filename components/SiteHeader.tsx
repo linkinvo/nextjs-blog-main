@@ -13,7 +13,7 @@ export default function Header( props ) {
   return (
     <header className="bg-gray-900 sm:flex sm:items-center sm:justify-between xl:bg-white">
       <div className="flex justify-between py-4 px-3 xl:w-72 xl:bg-gray-900 xl:justify-center xl:py-5">
-      <Link href="/" >
+      <Link href="/">
         <a>
           <svg className="h-8 w-auto" width="185" height="32" xmlns="http://www.w3.org/2000/svg"
           >

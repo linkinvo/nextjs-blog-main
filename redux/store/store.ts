@@ -113,11 +113,10 @@ function nextReducer(state: AppState, action) {
     }
     switch (action.type) {
         case HYDRATE: {
-            if (!isHydrated) {
-                isHydrated = true;
-                return { ...state, ...action.payload }
+            if (action.payload.entities.size <= 0) {
+                return { ...state };
             }
-            return state;
+            return { ...state, ...action.payload };
         }
         default:
             return state
@@ -140,7 +139,7 @@ export const makeStore = (ctx) => {
 
     store.sagaTask = sagaMiddleware.run(rootWatcher)
 
-    store.runSaga = () => sagaMiddleware.run(rootWatcher)
+    // store.runSaga = () => sagaMiddleware.run(rootWatcher)
 
     return store
 }

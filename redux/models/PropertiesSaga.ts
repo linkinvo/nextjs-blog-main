@@ -40,6 +40,7 @@ export const setSinglePropertyInfo = (payload: IProperty) => action(SET_SINGLE_P
 
      public * sagaGetAllProperties() {
          while (true) {
+             console.log(GET_ALL_PROPERTIES);
              yield take(GET_ALL_PROPERTIES);
              yield call(this.xRead, '/properties/');
          }
