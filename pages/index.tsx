@@ -8,7 +8,14 @@ import { withRouter } from 'next/router';
 
 function Home(props) {
   const properties = props.properties;
+<<<<<<< HEAD
+  const identity = props.identity;
+  
+  console.log("properties",properties);
+  console.log("Object.keys(properties)",Object.keys(properties));
+=======
   const identity = props.properties;
+>>>>>>> master
 
   return(
     <>
@@ -31,9 +38,13 @@ function Home(props) {
                   <div className='flex flex-wrap px-4 sm:inline-flex sm:pt-2 sm:pb-8 xl:px-8 gap-5'>
 
                     {
+<<<<<<< HEAD
+                      properties && Object.values(properties).map((info: any) =>
+=======
                        properties && Object.values(properties).map((info: any) =>
+>>>>>>> master
                         // <Card key={'card_' + id} property={properties[id]} />
-                        <div className='mt-10 sm:mt-0 sm:max-w-xs sm:w-full sm:flex-shrink-0 sm:px-2'>
+                        <div className='mt-10 sm:mt-0 sm:max-w-xs sm:w-full sm:flex-shrink-0 sm:px-2' key={info.id}>
                         <div className='relative pb-5/6'>
                           <Link key={info.id}  href={`/properties/${info.id}`}>
                             <a><img className='absolute insert-0 h-full rounded-lg shadow-md object-cover' src={info.img} alt="modern-home" /></a>
@@ -88,9 +99,9 @@ Home.getInitialProps = wrapper.getInitialAppProps(store => () => {
 const mapStateToProps = (state) => {
   const { entities } = state;
   return {
-     properties: state.entities.properties,
+     properties: entities.properties,
      identity: state.identity,
-     reviews:state.entities.reviews,
+     reviews:entities.reviews,
   }
 }
 

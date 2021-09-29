@@ -43,6 +43,7 @@ export const setSinglePropertyInfo = (payload: IProperty) => action(SET_SINGLE_P
 
      public * sagaGetAllProperties() {
          while (true) {
+             console.log(GET_ALL_PROPERTIES);
              yield take(GET_ALL_PROPERTIES);
              const result = yield call(this.xRead, '/properties/');
              const normalizedData = yield call(this.normalizeEntity, result);
@@ -55,8 +56,12 @@ export const setSinglePropertyInfo = (payload: IProperty) => action(SET_SINGLE_P
          while (true) {
              const data = yield take(GET_PROPERTY_BY_ID);
              const id = data.id;
+             console.log('prop id', id)
              const result = yield call(this.xRead, '/properties/' + id);
              const normalizedData = yield call(this.normalizeEntity, result);
+
+
+             
              yield put(setAllDataAC(this.getEntityName(), normalizedData));
          }
      }
