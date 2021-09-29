@@ -21,7 +21,6 @@ class ReviewEntity extends Entity {
         this.sagaGetReviewsByPropertyId = this.sagaGetReviewsByPropertyId.bind(this);
         Entity.addAction(this.sagaGetReviewsByPropertyId);
         this.xRead = this.xRead.bind(this);
-        // this.normalizeEntity = this.normalizeEntity.bind(this);
     }
 
     public * sagaGetReviewsByPropertyId() {
@@ -29,9 +28,6 @@ class ReviewEntity extends Entity {
             const data = yield take(GET_REVIEWS_BY_PROPERTY_ID);
             let propertiId = data.propertiId;
             yield call(this.xRead, '/reviews/by_property_id/' + propertiId, {})
-            // const result = yield call(this.xRead, '/reviews/by_property_id/' + propertiId, {})
-            // const { normalizedData, entName } = yield call(this.normalizeEntity, result);
-            // yield put(setAllDataAC(this.getEntityName(), normalizedData));
         }
     }
 }

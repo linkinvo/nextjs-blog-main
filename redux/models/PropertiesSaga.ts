@@ -35,8 +35,6 @@ export const setSinglePropertyInfo = (payload: IProperty) => action(SET_SINGLE_P
         this.sagaGetPropertyById = this.sagaGetPropertyById.bind(this);
         Entity.addAction(this.sagaGetAllProperties);
         Entity.addAction(this.sagaGetPropertyById);
-        // this.xRead = this.xRead.bind(this);
-        // this.normalizeEntity = this.normalizeEntity.bind(this);
     }
     
 
@@ -44,9 +42,6 @@ export const setSinglePropertyInfo = (payload: IProperty) => action(SET_SINGLE_P
          while (true) {
              yield take(GET_ALL_PROPERTIES);
              yield call(this.xRead, '/properties/');
-            // const result = yield call(this.xRead, '/properties/');
-            //  const normalizedData = yield call(this.normalizeEntity, result);
-            //  yield put(setAllDataAC(this.getEntityName(), normalizedData));
          }
      }
 
@@ -56,9 +51,7 @@ export const setSinglePropertyInfo = (payload: IProperty) => action(SET_SINGLE_P
              const id = data.id;
              const test = yield call(this.xRead, '/properties/' + id);
              console.log("test", test)
-            //  const result = yield call(this.xRead, '/properties/' + id);
-            //  const normalizedData = yield call(this.normalizeEntity, result);
-            //  yield put(setAllDataAC(this.getEntityName(), normalizedData));
+          
          }
      }
 }

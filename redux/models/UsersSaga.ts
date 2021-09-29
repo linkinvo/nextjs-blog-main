@@ -11,15 +11,12 @@ export const SET_USERS = 'SET_USERS';
 
 export const getUsers = () => action(GET_USERS);
 export const setUsers = (users: Array<IIdentity>) => action(SET_USERS, { users });
-
 class UserEntity extends Entity {
     constructor() {
         super(ENTITIES.USERS, {
         })
         this.sagaGetUsers = this.sagaGetUsers.bind(this);
         Entity.addAction(this.sagaGetUsers);
-        this.xRead = this.xRead.bind(this);
-        // this.normalizeEntity = this.normalizeEntity.bind(this);
     }
 
 
@@ -27,10 +24,6 @@ class UserEntity extends Entity {
         while (true) {
             yield take(GET_USERS);
             yield call(this.xRead, '/user/', {});
-            // const result = yield call(this.xRead, '/user/', {});
-            // const { normalizedData } = yield call(this.normalizeEntity, result);
-            // console.log("normalizedData, entName", normalizedData, this.getEntityName());
-            // yield put(setAllDataAC(this.getEntityName(), normalizedData));
         }
     }
 }
