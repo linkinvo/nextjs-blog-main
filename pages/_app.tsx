@@ -2,7 +2,7 @@ import 'tailwindcss/tailwind.css'
 import "../styles/global.css";
 import React from 'react'
 import { AppProps } from 'next/app';
-import {wrapper}  from '../redux/store/store';
+import wrapper  from '../redux/store/store';
 import { useDispatch } from 'react-redux';
 import { END } from 'redux-saga';
 import { btnLoginClick } from 'redux/models/identity';

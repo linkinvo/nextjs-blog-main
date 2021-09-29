@@ -5,6 +5,7 @@ const SERVER_URL = 'http://localhost:3000';
 // export class BaseEntity  {
 //     constructor() {
 //         super('Identity');
+
 //     }
 // }
 

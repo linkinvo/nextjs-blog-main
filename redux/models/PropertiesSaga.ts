@@ -3,7 +3,6 @@ import { all, call, put, take, select } from "redux-saga/effects"
 import { setAllDataAC} from "redux/saga/action"
 import { action } from "redux/store/actions"
 import { ENTITIES, IProperty } from "src/common"
-// import { xRead } from "src/request"
 import Entity from "./Entity"
 import reviewEntity from "./ReviewsSaga"
 import userEntity from "./UsersSaga" 
@@ -36,31 +35,32 @@ export const setSinglePropertyInfo = (payload: IProperty) => action(SET_SINGLE_P
         this.sagaGetPropertyById = this.sagaGetPropertyById.bind(this);
         Entity.addAction(this.sagaGetAllProperties);
         Entity.addAction(this.sagaGetPropertyById);
-        this.xRead = this.xRead.bind(this);
-        this.normalizeEntity = this.normalizeEntity.bind(this);
+        // this.xRead = this.xRead.bind(this);
+        // this.normalizeEntity = this.normalizeEntity.bind(this);
     }
     
 
      public * sagaGetAllProperties() {
          while (true) {
              yield take(GET_ALL_PROPERTIES);
-             const result = yield call(this.xRead, '/properties/');
-             const normalizedData = yield call(this.normalizeEntity, result);
-             yield put(setAllDataAC(this.getEntityName(), normalizedData));
+             yield call(this.xRead, '/properties/');
+            // const result = yield call(this.xRead, '/properties/');
+            //  const normalizedData = yield call(this.normalizeEntity, result);
+            //  yield put(setAllDataAC(this.getEntityName(), normalizedData));
          }
      }
-
 
      public * sagaGetPropertyById() {
          while (true) {
              const data = yield take(GET_PROPERTY_BY_ID);
              const id = data.id;
-             const result = yield call(this.xRead, '/properties/' + id);
-             const normalizedData = yield call(this.normalizeEntity, result);
-             yield put(setAllDataAC(this.getEntityName(), normalizedData));
+             const test = yield call(this.xRead, '/properties/' + id);
+             console.log("test", test)
+            //  const result = yield call(this.xRead, '/properties/' + id);
+            //  const normalizedData = yield call(this.normalizeEntity, result);
+            //  yield put(setAllDataAC(this.getEntityName(), normalizedData));
          }
      }
-
 }
 
 const propertyEntity = new PropertyEntity();

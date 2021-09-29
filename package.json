@@ -33,6 +33,7 @@
     "express-fileupload": "^1.2.1",
     "faker": "^5.5.3",
     "gray-matter": "^4.0.3",
+    "humps": "^2.0.1",
     "immutable": "^3.8.2",
     "init": "^0.1.2",
     "install": "^0.13.0",

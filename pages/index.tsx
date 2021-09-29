@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Layout from '../components/Layout'
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { getAllProperties } from 'redux/models/PropertiesSaga';
-import { wrapper } from 'redux/store/store';
+import  wrapper  from 'redux/store/store';
 import React from 'react'
 import { withRouter } from 'next/router';
 
@@ -81,7 +81,6 @@ function Home(props) {
 
 //@ts-ignore
 Home.getInitialProps = wrapper.getInitialAppProps(store => () => {
-
   store.dispatch(getAllProperties());
 });
 

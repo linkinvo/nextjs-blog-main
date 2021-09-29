@@ -1,8 +1,9 @@
-import { put, select, take } from 'redux-saga/effects';
+import { call, put, select, take } from 'redux-saga/effects';
 import { normalize, schema } from "normalizr";
 import { HTTP_METHOD } from "src/common";
 import { setAllDataAC, action, GET_ALL_DATA_SCHEMA  } from 'redux/saga/action';
 import next from '../../next.config';
+import { camelizeKeys } from 'humps';
 
 
 
@@ -22,6 +23,7 @@ export default class Entity {
     this.actionRequest = this.actionRequest.bind(this);
     this.xRead = this.xRead.bind(this);
     this.xSave = this.xSave.bind(this);
+    // this.normalizeEntity = this.normalizeEntity.bind(this);
     
     Entity.addAction = Entity.addAction.bind(this);
     Entity.getActions = Entity.getActions.bind(this);
@@ -80,14 +82,24 @@ export default class Entity {
   //   }
   // }
 
-  public normalizeEntity(result: any) {
-    const schema = [this.getSchema()]
-    if (result.success === true && result.response.error === false) {
-      const newResult = result.response.data;
-      if (Array.isArray(newResult) === true) return normalize(result.response.data, [this.getSchema()]);
-      else return normalize(result.response.data, this.getSchema());
-    }
-  }
+  // public normalizeEntity(result: any) {
+  //   const schema = this.getSchema() && [this.getSchema()]
+  //   // const schema = (Array.isArray(result.response.data)? [this.getSchema()] : this.getSchema())
+
+  //   if (result.success === true && result.response.error === false) {
+  //     const newResult = result.response.data;
+  //     if (Array.isArray(newResult) === true) {
+
+  //       // const normalizedData = normalize(camelizeKeys(JSON.parse(JSON.stringify(result.response.data))), schema);
+  //       const normalizedData = normalize(camelizeKeys(result.response.data), schema);
+
+  //       return normalizedData
+  //     }
+
+  //   }
+  //   //  else return normalize(result.response.data, this.getSchema());
+
+  // }
 
   protected static addAction(saga) {
     Entity.actions.push(saga);
@@ -97,9 +109,32 @@ export default class Entity {
     return Entity.actions;
   }
 
-  public actionRequest(endpoint?: string, method?: HTTP_METHOD, data?: any, token?: string){
+  public * actionRequest(endpoint?: string, method?: HTTP_METHOD, data?: any, token?: string) {
 
-    return this.xFetch(endpoint, method, data, token)
+    const result = yield call(this.xFetch, endpoint, method, data, token)
+
+    // const schema = this.getSchema() && [this.getSchema()]
+    const schema = (Array.isArray(result.response.data)? [this.getSchema()] : this.getSchema())
+    
+    if (result.success === true && result.response.error === false) {
+      const newResult = result.response.data;
+      if (Array.isArray(newResult) === true) {
+        const normalizedData = normalize(camelizeKeys(result.response.data), schema);
+        console.log('normalizedData',normalizedData);
+        
+        return yield put(setAllDataAC(this.getEntityName(), normalizedData))
+      }
+    }
+    
+    // const normalizedData  = this.normalizeEntity;
+    // console.log("normalizedData, entName", normalizedData, this.getEntityName());
+    // yield put(setAllDataAC(this.getEntityName(), normalizedData));
+
+    // return this.xFetch( endpoint, method, data, token)
+    return result;
+
+
+
   }
 
   public xSave(point: string, data: any = {}, token?: string){

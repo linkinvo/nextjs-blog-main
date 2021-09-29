@@ -3,7 +3,7 @@ import { all, call, put, take, select } from "redux-saga/effects"
 import { setAllDataAC } from "redux/saga/action";
 import { action } from "redux/store/actions";
 import { ENTITIES, IReview } from "src/common";
-import { xRead } from "src/request";
+
 import Entity from "./Entity";
 import userEntity from "./UsersSaga";
 
@@ -21,16 +21,17 @@ class ReviewEntity extends Entity {
         this.sagaGetReviewsByPropertyId = this.sagaGetReviewsByPropertyId.bind(this);
         Entity.addAction(this.sagaGetReviewsByPropertyId);
         this.xRead = this.xRead.bind(this);
-        this.normalizeEntity = this.normalizeEntity.bind(this);
+        // this.normalizeEntity = this.normalizeEntity.bind(this);
     }
 
     public * sagaGetReviewsByPropertyId() {
         while (true) {
             const data = yield take(GET_REVIEWS_BY_PROPERTY_ID);
             let propertiId = data.propertiId;
-            const result = yield call(xRead, '/reviews/by_property_id/' + propertiId, {})
-            const { normalizedData, entName } = yield call(this.normalizeEntity, result);
-            yield put(setAllDataAC(this.getEntityName(), normalizedData));
+            yield call(this.xRead, '/reviews/by_property_id/' + propertiId, {})
+            // const result = yield call(this.xRead, '/reviews/by_property_id/' + propertiId, {})
+            // const { normalizedData, entName } = yield call(this.normalizeEntity, result);
+            // yield put(setAllDataAC(this.getEntityName(), normalizedData));
         }
     }
 }

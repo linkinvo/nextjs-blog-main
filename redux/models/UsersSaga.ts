@@ -1,7 +1,5 @@
-// import { Entity } from 'redux/models/Entity';
 import { all, call, put, select, take } from 'redux-saga/effects';
 import { action } from 'redux/store/actions';
-import { xRead } from 'src/request';
 import { ENTITIES, IIdentity } from '../../src/common';
 import Entity from './Entity';
 import { schema, normalize } from 'normalizr';
@@ -21,18 +19,18 @@ class UserEntity extends Entity {
         this.sagaGetUsers = this.sagaGetUsers.bind(this);
         Entity.addAction(this.sagaGetUsers);
         this.xRead = this.xRead.bind(this);
-        this.normalizeEntity = this.normalizeEntity.bind(this);
+        // this.normalizeEntity = this.normalizeEntity.bind(this);
     }
 
 
     public * sagaGetUsers() {
         while (true) {
             yield take(GET_USERS);
-            const result = yield call(xRead, '/user/', {});
-            console.log("result",result);
-            const { normalizedData } = yield call(this.normalizeEntity, result);
-            console.log("normalizedData, entName", normalizedData, this.getEntityName());
-            yield put(setAllDataAC(this.getEntityName(), normalizedData));
+            yield call(this.xRead, '/user/', {});
+            // const result = yield call(this.xRead, '/user/', {});
+            // const { normalizedData } = yield call(this.normalizeEntity, result);
+            // console.log("normalizedData, entName", normalizedData, this.getEntityName());
+            // yield put(setAllDataAC(this.getEntityName(), normalizedData));
         }
     }
 }

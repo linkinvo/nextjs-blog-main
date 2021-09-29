@@ -36,30 +36,7 @@ export default class PropertiesController extends BaseContext {
   }
 
   
-  @route('/save/:id')
-  @POST()
-  save(req: Request, res: Response) {
-    const { PropertiesService } = this.di;
 
-    const result = PropertiesService.save(req.body, req.params.id)
-    .then(data => {
-      const props = {
-          data: data,
-          message: "properties are found successfully",
-          error: false
-      }
-      res.send(props);
-  })
-  .catch(err => {
-      const props = {
-          data: null,
-          message: err,
-          error: true
-      }
-      res.status(500).send(props);
-  });
-    return result
-  }
 
   @route('/:id')
   @GET()
@@ -84,6 +61,32 @@ export default class PropertiesController extends BaseContext {
         res.status(500).send(props);
     });
     return result
+}
+
+
+@route('/save/:id')
+@POST()
+save(req: Request, res: Response) {
+  const { PropertiesService } = this.di;
+
+  const result = PropertiesService.save(req.body, req.params.id)
+  .then(data => {
+    const props = {
+        data: data,
+        message: "properties are found successfully",
+        error: false
+    }
+    res.send(props);
+})
+.catch(err => {
+    const props = {
+        data: null,
+        message: err,
+        error: true
+    }
+    res.status(500).send(props);
+});
+  return result
 }
 
 }

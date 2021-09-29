@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { getPropertyById } from 'redux/models/PropertiesSaga';
-import { wrapper } from '../../redux/store/store'
+import  wrapper  from '../../redux/store/store'
 
 const reviewsCard = ({ review,user }) => {
   return (
