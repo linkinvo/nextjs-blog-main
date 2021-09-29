@@ -99,7 +99,7 @@ export default class Entity {
 
   public actionRequest(endpoint?: string, method?: HTTP_METHOD, data?: any, token?: string){
 
-    return this.xFetch(endpoint, method, data, token);
+    return this.xFetch(endpoint, method, data, token)
   }
 
   public xSave(point: string, data: any = {}, token?: string){

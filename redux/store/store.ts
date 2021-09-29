@@ -1,9 +1,7 @@
 import { applyMiddleware, combineReducers, createStore } from 'redux'
 import createSagaMiddleware from 'redux-saga'
 import { createWrapper, HYDRATE } from 'next-redux-wrapper'
-// import { fromJS } from 'immutable';
-import { cloneDeep, merge } from 'lodash';
-
+import _, { cloneDeep, merge } from 'lodash';
 import {rootWatcher} from '../saga/index'
 import identity from './identity'
 
@@ -21,12 +19,9 @@ const bindMiddleware = (middleware) => {
 const initialEntities = cloneDeep({});  
 
 function entities(state = initialEntities, action: any) {
-    switch (action.type) {
-        
+    switch (action.type) {    
         case SET_ALL_DATA_SCHEMA:
-            // const { data } = action;
             if (action.response && action.response.entities) {
-
                 const { response: { entities } } = action;
 
                 if (entities) {
@@ -38,14 +33,13 @@ function entities(state = initialEntities, action: any) {
                         const newState = cloneDeep(state);
                         newState[entityName] = { ...list };
                     });
-                    return merge(state, entities);
+                    return  entities;
                 }
             }
             break;
     }
     return state;
 }
-
 
 const appReducer = combineReducers({
     identity,
