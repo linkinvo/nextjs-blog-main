@@ -94,12 +94,6 @@ function Home(props) {
 Home.getInitialProps = wrapper.getInitialAppProps(store => () => {
 
   store.dispatch(getAllProperties());
-<<<<<<< HEAD
-  // console.log('List.getInitialAppProps()');
-  // console.log('store.getState()',store.getState());
-  // store.dispatch(setAllData());
-=======
->>>>>>> master
 });
 
 const mapStateToProps = (state) => {
