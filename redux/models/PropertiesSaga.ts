@@ -1,6 +1,4 @@
-import { normalize, schema } from "normalizr"
-import { all, call, put, take, select } from "redux-saga/effects"
-import { setAllDataAC} from "redux/saga/action"
+import { call, take } from "redux-saga/effects"
 import { action } from "redux/store/actions"
 import { ENTITIES, IProperty } from "src/common"
 import Entity from "./Entity"
@@ -28,8 +26,8 @@ export const setSinglePropertyInfo = (payload: IProperty) => action(SET_SINGLE_P
  class PropertyEntity extends Entity {
     constructor() {
         super(ENTITIES.PROPERTIES, {
+            reviews: [reviewEntity.getSchema()],
             user: userEntity.getSchema(),
-            reviews: [reviewEntity.getSchema()]
         });
         this.sagaGetAllProperties = this.sagaGetAllProperties.bind(this);
         this.sagaGetPropertyById = this.sagaGetPropertyById.bind(this);
@@ -39,8 +37,7 @@ export const setSinglePropertyInfo = (payload: IProperty) => action(SET_SINGLE_P
     
 
      public * sagaGetAllProperties() {
-         while (true) {
-             console.log(GET_ALL_PROPERTIES);
+         while (true) { 
              yield take(GET_ALL_PROPERTIES);
              yield call(this.xRead, '/properties/');
          }
@@ -50,8 +47,7 @@ export const setSinglePropertyInfo = (payload: IProperty) => action(SET_SINGLE_P
          while (true) {
              const data = yield take(GET_PROPERTY_BY_ID);
              const id = data.id;
-             const test = yield call(this.xRead, '/properties/' + id);
-             console.log("test", test)
+             yield call(this.xRead, '/properties/' + id);
           
          }
      }

@@ -1,10 +1,7 @@
-import { all, call, put, select, take } from 'redux-saga/effects';
+import { call, take } from "redux-saga/effects"
 import { action } from 'redux/store/actions';
 import { ENTITIES, IIdentity } from '../../src/common';
 import Entity from './Entity';
-import { schema, normalize } from 'normalizr';
-import { setAllDataAC } from 'redux/saga/action';
-
 
 export const GET_USERS = 'GET_USERS';
 export const SET_USERS = 'SET_USERS';

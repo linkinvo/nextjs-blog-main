@@ -1,7 +1,7 @@
 import { call, put, select, take } from 'redux-saga/effects';
 import { normalize, schema } from "normalizr";
 import { HTTP_METHOD } from "src/common";
-import { setAllDataAC, action, GET_ALL_DATA_SCHEMA  } from 'redux/saga/action';
+import { setAllDataAC } from 'redux/store/actions';
 import next from '../../next.config';
 import { camelizeKeys } from 'humps';
 
@@ -113,17 +113,10 @@ export default class Entity {
 
     const result = yield call(this.xFetch, endpoint, method, data, token)
 
-    // const schema = this.getSchema() && [this.getSchema()]
     const schema = (Array.isArray(result.response.data)? [this.getSchema()] : this.getSchema())
-    
     if (result.success === true && result.response.error === false) {
-      const newResult = result.response.data;
-      if (Array.isArray(newResult) === true) {
-        const normalizedData = normalize(camelizeKeys(result.response.data), schema);
-        console.log('normalizedData',normalizedData);
-        
-        return yield put(setAllDataAC(this.getEntityName(), normalizedData))
-      }
+      const normalizedData = normalize(camelizeKeys(result.response.data), schema); 
+      return yield put(setAllDataAC(this.getEntityName(), normalizedData))
     }
     
     // const normalizedData  = this.normalizeEntity;

@@ -1,4 +1,4 @@
-import { all, call, fork, take } from "redux-saga/effects"
+import { all, call} from "redux-saga/effects"
 import Entity from "redux/models/Entity";
 
 export const rootWatcher = function* root() {

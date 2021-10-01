@@ -1,6 +1,4 @@
-import { normalize, schema } from "normalizr";
-import { all, call, put, take, select } from "redux-saga/effects"
-import { setAllDataAC } from "redux/saga/action";
+import { call, take } from "redux-saga/effects"
 import { action } from "redux/store/actions";
 import { ENTITIES, IReview } from "src/common";
 
