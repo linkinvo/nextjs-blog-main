@@ -7,7 +7,7 @@ import {rootWatcher} from '../saga/index'
 import identity from './identity'
 import { serialize, deserialize } from 'json-immutable';
 
-import { SET_ALL_DATA_SCHEMA } from 'redux/saga/action';
+import { SET_ALL_DATA_SCHEMA } from 'redux/store/actions';
 
 
 const bindMiddleware = (middleware) => {
@@ -57,7 +57,6 @@ function entities(state = initialEntities, action: any) {
                 if (entities) {
                     Object.keys(entities).map((entityName) => {
                         let list = state.get(entityName);
-                        console.log("LIST.GET", list)
                         if (list && list.size > 0) {
                             Object.keys(entities[entityName]).map((id) => list = list.remove(id));
                         }

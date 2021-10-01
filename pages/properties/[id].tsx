@@ -4,7 +4,7 @@ import { getPropertyById } from 'redux/models/PropertiesSaga';
 import  wrapper  from '../../redux/store/store'
 import { connect } from 'react-redux';
 import Layout from 'components/Layout';
-import ReviewsCard from 'components/propertiesComponent/ReviewsListCard';
+import ReviewsListCard from 'components/propertiesComponent/ReviewsListCard';
 
 function Property(props) {
 
@@ -72,7 +72,7 @@ function Property(props) {
                 </div>
               </div>
 
-              <ReviewsCard props={props} />
+              <ReviewsListCard props={props} />
 
             </> 
             :
@@ -92,42 +92,19 @@ function Property(props) {
 // @ts-ignore
 Property.getInitialProps = wrapper.getInitialAppProps(store => (ctx: any) => {
   store.dispatch(getPropertyById(ctx.query.id));
-
   return {
     id: ctx.query.id,
   }
-
 });
 
 const mapStateToProps = (state, props) => {
-  console.log('====================================');
-  console.log("REV",state.entities.properties);
-  console.log('====================================');
-
-  // const property = ()=> state?.entities?.properties[props?.id]
-  // const property = async()=> await state?.entities?.properties[props?.id]
-
-// const reviews =  Object.values(state.entities.reviews).filter((item: any) => item.propertiId == props.id)
-
-const  reviews = Object.values(state.entities.reviews)
-
-console.log("reviews", reviews)
-
-// if (reviews === null || undefined) {
-//       // Object.values(state.entities.reviews);
-//       // state.entities.reviews
-
-//     }
-
-   
-
+  const entities = state.entities.toJS();
+  const reviews = Object.values(entities.reviews)
   return {
-    property: state?.entities?.properties[props.id],
-    // property: property,
+    property: entities.properties[props.id],
     identity: state.identity,
     reviews: reviews?.filter((item: any) => item.propertiId == props.id),
-    // reviews: reviews?.filter((item: any) => item.propertiId == props.id),
-    users: state.users,
+    users: entities.users,
   }
 }
 

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { getPropertyById } from 'redux/models/PropertiesSaga';
 import  wrapper  from '../../redux/store/store'
 
-const reviewsCard = ({ review,user }) => {
+const ReviewCard = ({ review,user }) => {
   return (
 
     <div className="p-8 bg-white border rounded shadow-sm" key={review.id}>
@@ -48,11 +48,11 @@ const reviewsCard = ({ review,user }) => {
 };
 
 const mapStateToProps = (state, props) => {
-  const users = Object.values(state.entities.users);
+  const users = Object.values(props.users);
   return {
     review: props.review,
     user: users.filter((item: any) => item.id == props.review.userId)[0],
   }
 }
 
-export default connect(mapStateToProps)(reviewsCard)
+export default connect(mapStateToProps)(ReviewCard);

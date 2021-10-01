@@ -8,14 +8,10 @@ import { withRouter } from 'next/router';
 
 function Home(props) {
   const properties = props.properties;
-<<<<<<< HEAD
   const identity = props.identity;
   
-  console.log("properties",properties);
-  console.log("Object.keys(properties)",Object.keys(properties));
-=======
-  const identity = props.properties;
->>>>>>> master
+  //console.log("properties",properties);
+  //console.log("Object.keys(properties)",Object.keys(properties));
 
   return(
     <>
@@ -38,11 +34,7 @@ function Home(props) {
                   <div className='flex flex-wrap px-4 sm:inline-flex sm:pt-2 sm:pb-8 xl:px-8 gap-5'>
 
                     {
-<<<<<<< HEAD
-                      properties && Object.values(properties).map((info: any) =>
-=======
                        properties && Object.values(properties).map((info: any) =>
->>>>>>> master
                         // <Card key={'card_' + id} property={properties[id]} />
                         <div className='mt-10 sm:mt-0 sm:max-w-xs sm:w-full sm:flex-shrink-0 sm:px-2' key={info.id}>
                         <div className='relative pb-5/6'>
@@ -96,7 +88,8 @@ Home.getInitialProps = wrapper.getInitialAppProps(store => () => {
 });
 
 const mapStateToProps = (state) => {
-  const { entities } = state;
+  const  entities  = state.entities.toJS();
+    
   return {
      properties: entities.properties,
      identity: state.identity,

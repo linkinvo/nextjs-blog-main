@@ -48,8 +48,6 @@ export default class JwtStrategy extends BaseContext {
     public getJwtFromRequest(req: Request) {
         this.request = req;
         const getToken = ExtractJwt.fromAuthHeaderAsBearerToken();
-        console.log('getToken!!!!!!!!!!!!!', getToken(req));
-        
         return getToken(req) || req.cookies['token'] || null;
     }
 }
