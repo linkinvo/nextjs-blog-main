@@ -1,12 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getPropertyById } from 'redux/models/PropertiesSaga';
-import  wrapper  from '../../redux/store/store'
 
 const ReviewCard = ({ review,user }) => {
   return (
 
-    <div className="p-8 bg-white border rounded shadow-sm" key={review.id}>
+    <div className="p-8 bg-white border rounded shadow-sm" key={review.get('id')}>
       <p className="mb-3 text-xs font-semibold tracking-wide uppercase">
         <a
           className="transition-colors duration-200 text-deep-purple-accent-400 hover:text-deep-purple-800"
@@ -14,10 +12,10 @@ const ReviewCard = ({ review,user }) => {
         >
           data-add
         </a>
-        <span className="text-gray-600">—{review.createdAt}</span>
+        <span className="text-gray-600">—{review.get('createdAt')}</span>
       </p>
       {/* //feedback */}
-      <p className="mb-5 text-gray-700">{review.feedback}</p>
+      <p className="mb-5 text-gray-700">{review.get('feedback')}</p>
       <div className="flex items-center">
         <a aria-label="Author" title="Author" className="mr-3">
           <img
@@ -36,7 +34,7 @@ const ReviewCard = ({ review,user }) => {
           </a>
           <p className="text-sm font-medium leading-4 text-gray-600">
             {
-              user && user.firstName
+              user && user.get('firstName')
             }
           </p>
         </div>
@@ -48,10 +46,11 @@ const ReviewCard = ({ review,user }) => {
 };
 
 const mapStateToProps = (state, props) => {
-  const users = Object.values(props.users);
+  const users = props.users;
+  const review = props.review;
   return {
-    review: props.review,
-    user: users.filter((item: any) => item.id == props.review.userId)[0],
+    review,
+    user: users.filter((item: any) => item.get('id') == review.get('userId'))[0],
   }
 }
 
